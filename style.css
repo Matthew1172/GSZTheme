@@ -1,0 +1,21 @@
+/*
+  Theme Name: Grad School Zero
+  Theme URI:
+  Author: Team M
+  Description: This is the theme for the gradschoolzero website
+  Version: 1.0
+  License: MIT
+  License URI:
+  Text Domain: Team M
+*/
+
+
+footer {
+    /*background-color: #ededed;*/
+    font-size: 12px;
+}
+
+footer ul {
+    padding: 0px;
+    list-style-type: none;
+}
