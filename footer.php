@@ -10,7 +10,7 @@
 ?>
 <!-- AJAX LOADER -->
 <div id="loading">
-    <div id="spinner" class="spinner-border" style="" role="status">
+    <div id="spinner" class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
     </div>
 </div>
