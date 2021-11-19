@@ -10,8 +10,8 @@
 ?>
 <!-- AJAX LOADER -->
 <div id="loading">
-    <div id="spinner" class="spinner-border" style="" role="status">
-        <span class="sr-only"></span>
+    <div id="spinner" class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
     </div>
 </div>
 
@@ -47,7 +47,7 @@
             </div>
             <div class="col-sm-6">
                 <h5 class="footer-head"><b>Non-Discrimination Statement</b></h5>
-                <p class="text-muted">Grad School Zero and Team M promote equal opportunity for all people without regard for race, color, creed, national origin, sex, age, lifestyle, sexual orientation, or disability.</p>
+                <p class="text-muted">gradZERO promotes equal opportunity for all people without regard for race, color, creed, national origin, sex, age, lifestyle, sexual orientation, or disability.</p>
             </div>
         </div>
         <div class="row">
