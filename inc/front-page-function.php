@@ -10,11 +10,10 @@ foreach ($comments as $comment) {
     $class_comment = new ClassReview();
     $class_comment->setComment_post_id($comment->comment_post_ID);
     $class_comment->setComment_author($comment->comment_author);
-    $class_comment->setClass_rating($rating[0]);
-
-    # echo ($class_comment->getComment_post_id() . ' --- ' . $class_comment->getComment_author() . ' --- ' . $class_comment->getClass_rating());
-    # echo ('</p>');
-
+	
+	if(count($rating) > 0){
+		$class_comment->setClass_rating($rating[0]);
+	}
     array_push($reviews, $class_comment);
 }
 
@@ -75,8 +74,12 @@ foreach($classes as $class) :
         $sum_of_ratings += $temp->getClass_rating();
     endforeach;
 
-    $average = $sum_of_ratings / $num_of_classes;
-
+	if($num_of_classes > 0){
+		$average = $sum_of_ratings / $num_of_classes;
+	}else{
+		$average = 0;
+	}
+    
     $class_rating = new ClassAverageRating();
     $class_rating->setClass_id($class->getPost_ID());
     $class_rating->setClass_name($class->getPost_class_name());
