@@ -10,7 +10,7 @@
  * @since gradschoolzero 1.0
  */
 
-require 'header.php';
+get_header();
 if (have_posts()) {
   while (have_posts()) {
     the_post();
@@ -22,17 +22,16 @@ if (have_posts()) {
     $info = get_userdata($current_user_id);
     $role = $info ? $info->roles[0] : 'none';
 
+
     if ($role == 'student') {
       //display html button for enroll to class
-    }else if($role == 'instructor'){
-      //display html button for request to be instructor?
-    }else{
-      //nothing
     }
 
 
     //put the html for the class
     the_title();
+	
+	
   }
 }
-require 'footer.php';
+get_footer();

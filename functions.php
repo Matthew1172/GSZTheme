@@ -519,23 +519,30 @@ function index_script_enqueue()
 {
 	//core bootstrap files, core css files
 	wp_enqueue_style('bootstrapCSS', get_template_directory_uri() . '/assets/bootstrap-5.1.3-dist/css/bootstrap.min.css');
+	/*Main css file, contatins styles that only affect the entire theme like adding color classes and changing font-type of elements*/
 	wp_enqueue_style('mainCSS', get_template_directory_uri() . '/style.css');
 	wp_enqueue_style('dashicons');
+	wp_enqueue_script('popperJS', get_template_directory_uri() . '/assets/popperjs-2.10.2-dist/popper.min.js');
 	wp_enqueue_script('bootstrapJS', get_template_directory_uri() . '/assets/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js');
-
-
-
+	//wp_enqueue_script('bootboxJS', get_template_directory_uri() . '/assets/bootbox-5.5.2-dist/bootbox.min.js');
+	/*Configuration file for this theme, includes AJAX config and creating bootbox prompts for system messages*/
+	wp_enqueue_script('configJS', get_template_directory_uri() . '/assets/js/configure.js', array('jquery'));
+	
 	/*
 	Add javascript files here, the comment below is an example, make sure the first parameter is unique, just keep parameters 3-5 the same
 	*/
 	//wp_enqueue_script('myFileJS', get_template_directory_uri() . '/assets/js/my-file.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('signupJS', get_template_directory_uri() . '/assets/js/signup-submit.js', array('jquery'), '1.0', true);
+	/* Student and instructor profile javascript controls */
+	wp_enqueue_script('profile_studentJS', get_template_directory_uri() . '/assets/js/profile_student_controls.js', array('jquery'), '1.0', true);
 
 
 	/*
 	Add css files here, the comment below is an example
 	*/
 	//wp_enqueue_style('myFileCSS', get_template_directory_uri() . '/assets/css/my-file.css');
+	/* Student and instructor profile stylesheets */
+	wp_enqueue_style('profile_studentCSS', get_template_directory_uri() . '/assets/css/profile_student_style.css');
 
 
 
@@ -543,6 +550,15 @@ function index_script_enqueue()
 	//don't worry about this for now
 	$logoutRaw = wp_loginout($_SERVER['REQUEST_URI'], false);
 	$logoutNav = "<li class='nav-item nav-link'>$logoutRaw<span class='dashicons dashicons-migrate pl-1'></span></li>";
+	
+	/*This allows PHP variables to be passed as a javascript object called gsz into the specified javascript file. 
+	* We need to pass the admin-agax url into the configuration.js file so it can setup AJAX accordingly
+	* We also need to pass the logout html so that it can append it to the navbar
+	*/
+	wp_localize_script('configJS', 'gsz', array(
+		'url' => admin_url('admin-ajax.php'),
+		'logOut' => $logoutNav
+	));
 }
 add_action('wp_enqueue_scripts', 'index_script_enqueue');
 
@@ -553,3 +569,5 @@ Add php files with hook names matching the ajax function calls in JS file
 
 //Signup php function
 require  get_template_directory() . '/inc/signup-function.php';
+//Student profile form submit
+require  get_template_directory() . '/inc/profile_student.php';

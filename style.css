@@ -19,3 +19,42 @@ footer ul {
     padding: 0px;
     list-style-type: none;
 }
+
+.bColor {
+    color: #016ba9;
+}
+
+.bWhite {
+    background-color: white;
+}
+
+.form-error {
+    color: red;
+}
+
+.form-success {
+    color: green;
+}
+
+.input-error {
+    box-shadow: 0 0 5px red;
+}
+
+#loading{
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+}
+
+#spinner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}

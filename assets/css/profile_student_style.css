@@ -1,0 +1,59 @@
+/*
+Theme Name: GSZTheme
+Theme URI: http://localhost
+Author: Team M
+Description: This is the style sheet for handling the student profile
+*/
+
+.control-area {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+#drop-selector {
+    font-size: 22px;
+    height: 100% !important;
+}
+
+/* Style tab links */
+
+.tablink {
+    background-color: #28838b;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 17px;
+    width: 25%;
+    margin: 0px 3px 0px 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.tablink:hover {
+    background-color: #32fbe2;
+    color: black;
+}
+
+.dashRow {
+    width: 100%;
+}
+
+.banner {
+    background-color: #5724a3;
+}
+
+.heading {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.profile-btn {
+    font-size: 17px;
+}
+
+.profile-btn-select {
+    background-color: #1b1d3c;
+}

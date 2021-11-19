@@ -40,20 +40,21 @@
             <?php
             if (is_user_logged_in()) {
                 wp_nav_menu( array(
-                    'menu' => 'top-navbar-user',
-                    'theme_location' => 'top-navbar-user-loc',
+                    'menu' 				=> 'top-navbar-user',
+                    'theme_location' 	=> 'top-navbar-user-loc',
                     'depth'             => 2,
                     'container'         => 'div',
                     'container_class'   => 'collapse navbar-collapse',
                     'container_id'      => 'bs4navbar',
+                    'menu_id' 			=> 'logoutNav',
                     'menu_class'        => 'nav navbar-nav ms-auto',
                     'fallback_cb'       => 'WP_Bootstrap_Navwalker::fallback',
                     'walker'            => new WP_Bootstrap_Navwalker(),
                 ) );
             } else {
                 wp_nav_menu( array(
-                    'menu' => 'top-navbar-guest',
-                    'theme_location' => 'top-navbar-guest-loc',
+                    'menu' 				=> 'top-navbar-guest',
+                    'theme_location'	=> 'top-navbar-guest-loc',
                     'depth'             => 2,
                     'container'         => 'div',
                     'container_class'   => 'collapse navbar-collapse',
