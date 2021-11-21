@@ -248,7 +248,7 @@ if (!function_exists('gradschoolzero_setup')) {
 			if (!empty($new_page_template)) {
 				update_post_meta($sfc_page_id, '_wp_page_template', $new_page_template);
 			}
-		}else{		
+		}else{
 			$sfc_page_id = get_page_by_title('search for classes', OBJECT, 'page');
 		}
 
@@ -571,3 +571,5 @@ Add php files with hook names matching the ajax function calls in JS file
 require  get_template_directory() . '/inc/signup-function.php';
 //Student profile form submit
 require  get_template_directory() . '/inc/profile_student.php';
+//Class search form submit and query vars
+require  get_template_directory() . '/inc/search-classes-function.php';

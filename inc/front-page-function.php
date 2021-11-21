@@ -1,6 +1,6 @@
 <?php
 
-require 'wp-content/themes/GSZTheme/classes/front-page-classes.php';
+require get_template_directory().'/classes/front-page-classes.php';
 
 $comments = get_comments();
 $reviews = array();

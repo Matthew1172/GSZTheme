@@ -9,19 +9,20 @@
  */
 /* Template Name: contact */ 
 
-require 'header.php'; ?>
+get_header();
+?>
 
 
-<div class="banner">
+<div class="banner mb-5">
   <div class="heading container">
-    <h1 class="text-white">Contact us</h1>
+    <h1 class="text-white">Contact us.</h1>
   </div>
 </div>
 
-<div class="container control-area">
+<div class="container">
   <div class="row">
     <div class="col-md-6">
-      <h2 class="bColor">Office contacts: </h2>
+      <h2 class="">Office contacts: </h2>
       <hr>
       <?php
       $contactOffice_qry = array(
@@ -39,7 +40,7 @@ require 'header.php'; ?>
       ?>
     </div>
     <div class="col-md-6">
-      <h2 class="bColor">Staff contacts: </h2>
+      <h2 class="">Staff contacts: </h2>
       <hr>
       <?php
       $contactOffice_qry = array(
@@ -58,4 +59,4 @@ require 'header.php'; ?>
     </div>
   </div>
 </div>
-<?php require 'footer.php'; ?>
+<?php get_footer(); ?>
