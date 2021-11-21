@@ -21,30 +21,12 @@ get_header();
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
-      <h2 class="">Office contacts: </h2>
+    <div class="col-md-12">
+      <h2 class="">Registrar contact information</h2>
       <hr>
       <?php
       $contactOffice_qry = array(
-        'category_name' => 'contactOffice'
-      );
-      $query = new WP_Query($contactOffice_qry);
-      if($query->have_posts())
-      {
-        while($query->have_posts())
-        {
-          $query->the_post();
-          the_content();
-        }
-      }
-      ?>
-    </div>
-    <div class="col-md-6">
-      <h2 class="">Staff contacts: </h2>
-      <hr>
-      <?php
-      $contactOffice_qry = array(
-        'category_name' => 'contactStaff'
+        'category_name' => 'contactPage'
       );
       $query = new WP_Query($contactOffice_qry);
       if($query->have_posts())

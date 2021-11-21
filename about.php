@@ -20,13 +20,13 @@ get_header();
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 class="">Team M</h2>
+      <h2>A message from Team M</h2>
       <hr>
       <?php
-      $contactOffice_qry = array(
-        'category_name' => 'contactOffice'
+      $about_qry = array(
+        'category_name' => 'about'
       );
-      $query = new WP_Query($contactOffice_qry);
+      $query = new WP_Query($about_qry);
       if($query->have_posts())
       {
         while($query->have_posts())

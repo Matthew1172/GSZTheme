@@ -59,6 +59,52 @@ if (!function_exists('gradschoolzero_setup')) {
 				'unlink-homepage-logo' => true,
 			)
 		);
+		
+		//Create the post categories that this theme uses for the about us, contact, and footer
+	  wp_insert_term(
+		'About',
+		'category',
+		array(
+		  'description' => 'A description of Grad School Zero.',
+		  'slug' => 'about'
+		)
+	  );
+	  wp_insert_term(
+		'Announcement',
+		'category',
+		array(
+		  'description' => 'This is an announcement made by the Registrar.',
+		  'slug' => 'announcement'
+		)
+	  );
+	  wp_insert_term(
+		'Contact',
+		'category',
+		array(
+		  'description' => 'The Grad School Zero contact information',
+		  'slug' => 'contact'
+		)
+	  );
+	  $parent_contact = term_exists('Contact', 'category');
+	  wp_insert_term(
+		'Contact page',
+		'category',
+		array(
+		  'description' => 'The registrar contact information on the contact page.',
+		  'slug' => 'contactPage',
+		  'parent' => $parent_contact['term_id']
+		)
+	  );
+	  wp_insert_term(
+		'Contact footer',
+		'category',
+		array(
+		  'description' => 'The contact information in the footer for the registrar.',
+		  'slug' => 'contactFooter',
+		  'parent' => $parent_contact['term_id']
+		)
+	  );
+
 
 		//create all pages for theme
 		//home

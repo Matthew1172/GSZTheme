@@ -23,7 +23,7 @@
                 <div>
                     <?php
                     $contactOffice_qry = array(
-                        'category_name' => 'contactOffice'
+                        'category_name' => 'contactFooter'
                     );
                     $query = new WP_Query($contactOffice_qry);
                     if ($query->have_posts()) {
