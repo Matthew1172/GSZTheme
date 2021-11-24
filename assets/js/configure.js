@@ -1,5 +1,13 @@
 (function($) {
 	$(document).ready(function() {
+		
+			//Style the sign in form in javascript because we're using the wordpress function to display the form
+			$('#login_form').addClass("text-center");
+			$('#login_username').addClass("form-control");
+			$('#login_password').addClass("form-control");
+			$('#login_submit').addClass("form-control btn btn-outline-primary w-50");
+			$('#login_remember').addClass("");
+		
 			/* Append the logout button to the navbar*/
 			$("#logoutNav").append(gsz.logOut);
 			

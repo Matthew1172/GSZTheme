@@ -1,15 +1,15 @@
 <?php
 /**
  * 
- * $_GET variables available on the site
+ * add to the $_GET variables available on the site
  * 
  */
-function add_query_vars_filter($vars)
+function add_classSearch_query_vars_filter($vars)
 {
 	$vars[] = "ct";
 	return $vars;
 }
-add_filter('query_vars', 'add_query_vars_filter');
+add_filter('query_vars', 'add_classSearch_query_vars_filter');
 
 /* This function will be called when the form on the search page is submitted.
 It takes the result inside of the input of the form called <ct> 

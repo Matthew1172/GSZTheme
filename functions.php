@@ -510,6 +510,24 @@ function deactivate_my_theme( $new_theme ) {
 add_action( 'switch_theme', 'deactivate_my_theme' );
 
 
+/*
+ * Function to sign in users
+ */
+function my_login_redirect($redirected_to, $requested_redirect_to, $user)
+{
+	if (is_wp_error($user)) {
+		$error_types = array_keys($user->errors);
+		$error_type = 'Empty fields';
+		if (is_array($error_types) && !empty($error_types)) {
+			$error_type = $error_types[0];
+		}
+		wp_redirect(get_permalink(get_page_by_path('sign-in')->ID) . '?login=failed');
+		exit;
+	} else {
+		return $requested_redirect_to;
+	}
+}
+add_filter('login_redirect', 'my_login_redirect', 10, 3);
 
 
 

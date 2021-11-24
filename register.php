@@ -52,7 +52,6 @@ if (!is_user_logged_in()) {
                     </ul>
                 </form>
                 <p class="text-center py-1"><a href="<?php echo get_permalink(get_page_by_path('sign-in')->ID); ?>">Already have an account?</a></p>
-                <p class="text-center py-1"><a href="<?php echo get_permalink(get_page_by_path('recover-account')->ID); ?>">Forgot password?</a></p>
             </div>
         </div>
     </div>
