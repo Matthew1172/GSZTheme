@@ -13,7 +13,10 @@
  
 <div class="banner">
     <div class="heading container">
-        <h1 class="text-white">Welcome back.</h1>
+		<?php
+			$name = $info->display_name;
+			echo "<h1 class='text-white'>Welcome back, $name</h1>";
+		?>
     </div>
     <div class="container" style="padding-left: 0px; padding-right: 0px;">
         <div id='dashBtn' class="dashRow btn-group btn-group-justified">
@@ -41,160 +44,162 @@
 			$warn = get_user_meta($currentId, 'warn', true);
 			$status = get_user_meta($currentId, 'status', true);
 			switch($status){
-			case 'mat':
-			$status = 'Matriculated';
-			break;
-			case 'sus':
-			$status = 'Suspended';
-			break;
-			case 'exp':
-			$status = 'Expelled';
-			break;
+				case 'mat':
+				$status = 'Matriculated';
+				break;
+				case 'sus':
+				$status = 'Suspended';
+				break;
+				case 'exp':
+				$status = 'Expelled';
+				break;
 			}
 			$phase = get_user_meta($currentId, 'phase', true);
 			switch($phase){
-			case 'csp':
-			$phase = 'Course set-up period';
-			break;
-			case 'crp':
-			$phase = 'Course registration period';
-			break;
-			case 'scrp':
-			$phase = 'Special course registration period';
-			break;
-			case 'crup':
-			$phase = 'Course running period';
-			break;
-			case 'gp':
-			$phase = 'Grading period';
-			break;
-			case 'pgp':
-			$phase = 'Post grading period';
-			break;
+				case 'csp':
+				$phase = 'Course set-up period';
+				break;
+				case 'crp':
+				$phase = 'Course registration period';
+				break;
+				case 'scrp':
+				$phase = 'Special course registration period';
+				break;
+				case 'crup':
+				$phase = 'Course running period';
+				break;
+				case 'gp':
+				$phase = 'Grading period';
+				break;
+				case 'pgp':
+				$phase = 'Post grading period';
+				break;
 			}
-	echo '<h5>Warnings: '.$warn.'</h5>';
-	echo '<h5>Status: '.$status.'</h5>';
-	echo '<h5>Phase: '.$phase.'</h5>';
-			
-	$gp = 0.0;
-	$numOfFactors = 0.0;
-	echo '<h5>Transcript</h5>';
-	echo '<table class="table">';
-		echo '<thead>';
-			echo '<tr>';
-				echo '<th scope="col">Class</th>';
-				echo '<th scope="col">Grade</th>';
-				echo '<th scope="col">Attempt</th>';
-			echo '</tr>';
-		echo '</thead>';
-	
-		echo '<tbody>';
-		$classes_query = array('post_type' => 'gradschoolzeroclass');
-		$q = new WP_Query($classes_query);
-		if($q->have_posts()){
-			while($q->have_posts()){
-				$q->the_post();
-				$transcript_key = str_replace(" ", "", strtolower(get_the_title())) . "_transcript";
-				$fgrade_key = str_replace(" ", "", strtolower(get_the_title())) . "_fgrade";
-				for($i = 1; $i < 5; $i++){
-					if(get_user_meta($currentId, $transcript_key."_".strval($i), true) == "taken"){
-						$gf = get_user_meta($currentId, $fgrade_key."_".strval($i), true);
-						$remove_key = str_replace(" ", "", strtolower(get_the_title())) . "_remove_".strval($i);
-
-						//sum the grade points here are the factors
-						//also set the GradeFinalPretty value here or else it will disply grades as "ap, am, a, cm, bm, ..."
-						switch($gf){
-							case 'na':
-								$gf_p = 'N/A';
-								break;
-							case 'w':
-								$gf_p = 'W';
-								break;
-							case 'ncr':
-								$gf_p = 'NCR';
-								break;
-							case 'cr':
-								$gf_p = 'CR';
-								break;
-							case 'f':
-								$gp += 0.0;
-								$numOfFactors += 1.0;
-								$gf_p = 'F';
-								break;
-							case 'd':
-								$gp += 1.0;
-								$numOfFactors += 1.0;
-								$gf_p = 'D';
-								break;
-							case 'cm':
-								$gp += 1.7;
-								$numOfFactors += 1.0;
-								$gf_p = 'C-';
-								break;
-							case 'c':
-								$gp += 2.0;
-								$numOfFactors += 1.0;
-								$gf_p = 'C';
-								break;
-							case 'cp':
-								$gp += 2.3;
-								$numOfFactors += 1.0;
-								$gf_p = 'C+';
-								break;
-							case 'bm':
-								$gp += 2.7;
-								$numOfFactors += 1.0;
-								$gf_p = 'B-';
-								break;
-							case 'b':
-								$gp += 3.0;
-								$numOfFactors += 1.0;
-								$gf_p = 'B';
-								break;
-							case 'bp':
-								$gp += 3.3;
-								$numOfFactors += 1.0;
-								$gf_p = 'B+';
-								break;
-							case 'am':
-								$gp += 3.7;
-								$numOfFactors += 1.0;
-								$gf_p = 'A-';
-								break;
-							case 'a':
-								$gp += 4.0;
-								$numOfFactors += 1.0;
-								$gf_p = 'A';
-								break;
-							case 'ap':
-								$gp += 4.0;
-								$numOfFactors += 1.0;
-								$gf_p = 'A+';
-								break;
-							}
-						
+			echo "<h5 class='bColor2'>Warnings: <span class='bColor'>$warn</span></h5>";
+			echo "<h5 class='bColor2'>Status: <span class='bColor'>$status</span></h5>";
+			echo "<h5 class='bColor2'>Phase: <span class='bColor'>$phasePretty</span></h5>";
+					
+			$gp = 0.0;
+			$numOfFactors = 0.0;
+			echo '<h5>Transcript</h5>';
+			echo "<div class='table-responsive'>";
+				echo '<table class="table">';
+					echo '<thead>';
 						echo '<tr>';
-							echo '<td>'.get_the_title().'</td>';
-							echo '<td>'.$gf_p.'</td>';
-							echo '<td>'.$i.'</td>';
+							echo '<th scope="col">Class</th>';
+							echo '<th scope="col">Grade</th>';
+							echo '<th scope="col">Attempt</th>';
 						echo '</tr>';
+					echo '</thead>';
+				
+					echo '<tbody>';
+					$classes_query = array('post_type' => 'gradschoolzeroclass');
+					$q = new WP_Query($classes_query);
+					if($q->have_posts()){
+						while($q->have_posts()){
+							$q->the_post();
+							$transcript_key = str_replace(" ", "", strtolower(get_the_title())) . "_transcript";
+							$fgrade_key = str_replace(" ", "", strtolower(get_the_title())) . "_fgrade";
+							for($i = 1; $i < 5; $i++){
+								if(get_user_meta($currentId, $transcript_key."_".strval($i), true) == "taken"){
+									$gf = get_user_meta($currentId, $fgrade_key."_".strval($i), true);
+									$remove_key = str_replace(" ", "", strtolower(get_the_title())) . "_remove_".strval($i);
+
+									//sum the grade points here are the factors
+									//also set the GradeFinalPretty value here or else it will disply grades as "ap, am, a, cm, bm, ..."
+									switch($gf){
+										case 'na':
+											$gf_p = 'N/A';
+											break;
+										case 'w':
+											$gf_p = 'W';
+											break;
+										case 'ncr':
+											$gf_p = 'NCR';
+											break;
+										case 'cr':
+											$gf_p = 'CR';
+											break;
+										case 'f':
+											$gp += 0.0;
+											$numOfFactors += 1.0;
+											$gf_p = 'F';
+											break;
+										case 'd':
+											$gp += 1.0;
+											$numOfFactors += 1.0;
+											$gf_p = 'D';
+											break;
+										case 'cm':
+											$gp += 1.7;
+											$numOfFactors += 1.0;
+											$gf_p = 'C-';
+											break;
+										case 'c':
+											$gp += 2.0;
+											$numOfFactors += 1.0;
+											$gf_p = 'C';
+											break;
+										case 'cp':
+											$gp += 2.3;
+											$numOfFactors += 1.0;
+											$gf_p = 'C+';
+											break;
+										case 'bm':
+											$gp += 2.7;
+											$numOfFactors += 1.0;
+											$gf_p = 'B-';
+											break;
+										case 'b':
+											$gp += 3.0;
+											$numOfFactors += 1.0;
+											$gf_p = 'B';
+											break;
+										case 'bp':
+											$gp += 3.3;
+											$numOfFactors += 1.0;
+											$gf_p = 'B+';
+											break;
+										case 'am':
+											$gp += 3.7;
+											$numOfFactors += 1.0;
+											$gf_p = 'A-';
+											break;
+										case 'a':
+											$gp += 4.0;
+											$numOfFactors += 1.0;
+											$gf_p = 'A';
+											break;
+										case 'ap':
+											$gp += 4.0;
+											$numOfFactors += 1.0;
+											$gf_p = 'A+';
+											break;
+										}
+									
+									echo '<tr>';
+										echo '<td>'.get_the_title().'</td>';
+										echo '<td>'.$gf_p.'</td>';
+										echo '<td>'.$i.'</td>';
+									echo '</tr>';
+								}
+							}
+						}
 					}
+					echo '</tbody>';
+				echo '</table>';
+			echo "</div>";
+			//Print the gpa, and honor roll status
+			if($numOfFactors > 0){
+				$gpa = $gp/$numOfFactors;
+				echo '<h5>GPA: '.sprintf("%.3f", $gpa).'</h5>';
+				//display if student is on honor roll
+				if($gpa > 3.5){
+					echo '<h5>HONOR ROLL</h5>';
 				}
+			}else{
+				echo '<h5>You have no classes on your transcript that affect your gpa, or you have no classes on your transcript.</h5>';
 			}
-		}
-		echo '</tbody>';
-	echo '</table>';
-	//Print the gpa, and honor roll status
-	if($numOfFactors > 0){
-		$gpa = $gp/$numOfFactors;
-		echo '<h5>GPA: '.sprintf("%.3f", $gpa).'</h5>';
-		//display if student is on honor roll
-		if($gpa > 3.5){
-			echo '<h5>HONOR ROLL</h5>';
-		}
-	}else{
-		echo '<h5>You have no classes on your transcript that affect your gpa, or you have no classes on your transcript.</h5>';
-	}
             ?>
         </div>
     </div>
@@ -204,54 +209,54 @@
             <h2 class="">Schedule</h2>
             <hr />
             <?php
-			
-echo '<div class="table-responsive">';
-	echo '<table class="table">';
-		echo '<thead>';
-		echo '<tr>';
-			echo '<th scope="col">ID</th>';
-			echo '<th scope="col">Class</th>';
-			echo '<th scope="col">Schedule</th>';
-		echo '</tr>';
-		echo '</thead>';
-		
-		echo '<tbody>';
-	$classes_query = array('post_type' => 'gradschoolzeroclass');
-	$q = new WP_Query($classes_query);
-	if($q->have_posts()){
-		while($q->have_posts()){
-			$q->the_post();
-			$pid = get_the_id();
-			$link = get_permalink();
-			$enrollment_key = str_replace(" ", "", strtolower(get_the_title())) . "_enrollment";
-			$en = get_user_meta($currentId, $enrollment_key, true);
-			if($en == 'e'){
-				//student is enrolled in this class
-				//get the days of the week for this class
-				$days = "";
-				$days .= get_post_meta($pid, 'm', true) == 'yes' ? 'Mo' : '';
-				$days .= get_post_meta($pid, 't', true) == 'yes' ? 'Tu' : '';
-				$days .= get_post_meta($pid, 'w', true) == 'yes' ? 'We' : '';
-				$days .= get_post_meta($pid, 'h', true) == 'yes' ? 'Th' : '';
-				$days .= get_post_meta($pid, 'f', true) == 'yes' ? 'Fr' : '';
-				$days .= get_post_meta($pid, 's', true) == 'yes' ? 'Sa' : '';
-				
-				$st = get_post_meta($pid, 'startTime', true);
-				$et = get_post_meta($pid, 'endTime', true);
-				
-				$loc = get_post_meta($pid, 'loc', true) == 'v' ? 'Virtual' : 'In person';
-				
-				echo '<tr>';
-					echo '<th>'.$pid.'</th>';
-					echo '<td><a href="'.$link.'">'.get_the_title().'</td>';
-					echo '<td>'.$days.'<br>'.$st.'-'.$et.'<br>'.$loc.'</td>';
-				echo '</tr>';
-			}
-		}
-	}
-		echo '</tbody>';
-	echo '</table>';
-	echo '</div>';
+			echo '<div class="table-responsive">';
+				echo '<table class="table">';
+					echo '<thead>';
+						echo '<tr>';
+							echo '<th scope="col">ID</th>';
+							echo '<th scope="col">Class</th>';
+							echo '<th scope="col">Schedule</th>';
+						echo '</tr>';
+					echo '</thead>';
+
+					echo '<tbody>';
+						$classes_query = array('post_type' => 'gradschoolzeroclass');
+						$q = new WP_Query($classes_query);
+						if($q->have_posts()){
+							while($q->have_posts()){
+								$q->the_post();
+								$pid = get_the_id();
+								$link = get_permalink();
+								$title = get_the_title();
+								$enrollment_key = str_replace(" ", "", strtolower(get_the_title())) . "_enrollment";
+								$en = get_user_meta($currentId, $enrollment_key, true);
+								if($en == 'e'){
+									//student is enrolled in this class
+									//get the days of the week for this class
+									$days = "";
+									$days .= get_post_meta($pid, 'm', true) == 'yes' ? 'Mo' : '';
+									$days .= get_post_meta($pid, 't', true) == 'yes' ? 'Tu' : '';
+									$days .= get_post_meta($pid, 'w', true) == 'yes' ? 'We' : '';
+									$days .= get_post_meta($pid, 'h', true) == 'yes' ? 'Th' : '';
+									$days .= get_post_meta($pid, 'f', true) == 'yes' ? 'Fr' : '';
+									$days .= get_post_meta($pid, 's', true) == 'yes' ? 'Sa' : '';
+
+									$st = get_post_meta($pid, 'startTime', true);
+									$et = get_post_meta($pid, 'endTime', true);
+
+									$loc = get_post_meta($pid, 'loc', true) == 'v' ? 'Virtual' : 'In person';
+
+									echo '<tr>';
+										echo "<th>$pid</th>";
+										echo "<td><a href='$link'>$title</td>";
+										echo "<td>$days<br>$st-$et<br>$loc</td>";
+									echo '</tr>';
+								}
+							}
+						}
+					echo '</tbody>';
+				echo '</table>';
+			echo '</div>';
             ?>
         </div>
     </div>

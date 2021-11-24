@@ -1,14 +1,12 @@
 /*Student profile controls*/
 (function ($) {
     $(document).ready(function () {
-
         /*
          *
          *Set the academic information tab on the student profile to be selected
          *
          */
         $("#defaultOpen").click();
-        //$("#drop-selector").options[0].selected = 'selected';
 
         /*
          *
@@ -25,6 +23,7 @@
                 $('#dashDrp').show();
             }
         });
+		
         var win = $(this);
         if (win.width() > 1000) {
             $('#dashDrp').hide();
@@ -36,13 +35,137 @@
 		
         /*
          *
-         *Give the drop selector on the student profile page control of opening tabs
+         *Give the drop selector on the profile page control of opening tabs
          *
          */
         $('#drop-selector').on('change', function () {
             var selection = $(this).val();
             openPage(selection);
         });
+		
+		
+		/*
+         * send msg
+         */
+        $('#add-msg-form').submit(function (event) {
+            event.preventDefault();
+			var title = $('#msg-title').val();
+			var type = $('#msg-type').val();
+			var desc = get_tinymce_content('msg-desc');
+
+			$.ajax({
+				type: "POST",
+				dataType: 'JSON',
+				data: {
+					action: 'call_add_msg',
+					title: title,
+					desc: desc,
+					type: type
+				},				
+				beforeSend: function () {
+					$('#loading').show()
+				},
+				success: function (response) {
+					$("#msg-title").removeClass("input-error");
+					switch (response['r']) {
+						case 'empty':
+							$("#msg-title").addClass("input-error");
+							empty();
+							break;
+						case 'notValid':
+							$('#msg-title').addClass('input-error');
+							fail('Invalid fields.');
+							break;
+						case 'desc':
+							fail('The description is too short.');
+							break;
+						case 'success':
+							$('#msg-title').removeClass('input-error');
+							success();
+							break;
+						default:
+							fail(response['r']);
+							//appBreak();
+							break;
+					}
+				}
+			}).done(function() {
+				$('#loading').hide();
+			});
+
+        });
+		
+		/*
+		Function to allow a waitlisted student into a class
+		*/
+		$(document).on('click', '.change-waitlist', function () {
+            //event.preventDefault();
+            var uidDashTitle = $(this).attr('id');
+			var enrollment = $("#"+uidDashTitle+"-enrollment").val();
+			$.ajax({
+                type: "POST",
+                dataType: 'JSON',
+                data: {
+                    action: 'call_change_waitlist',
+                    uidDashTitle: uidDashTitle,
+					enrollment: enrollment
+                },
+				beforeSend: function (response) {
+					$('#loading').show()
+                },
+                success: function (response) {
+                    switch (response['r']) {
+                        case 'failed':
+                            fail();
+                            break;
+                        case 'success':
+							success();
+                            break;
+                        default:
+                            appBreak();
+                            break;
+                    }
+                }
+            }).done(function() {
+				$('#loading').hide()
+			});
+		});
+		
+		/*
+		Function to assign a grade to a student in a class
+		*/
+		$(document).on('click', '.assign-grade', function () {
+            //event.preventDefault();
+            var uidDashTitle = $(this).attr('id');
+			var grade = $("#"+uidDashTitle+"-grade").val();
+			$.ajax({
+                type: "POST",
+                dataType: 'JSON',
+                data: {
+                    action: 'call_assign_grade',
+                    uidDashTitle: uidDashTitle,
+					grade: grade
+                },
+				beforeSend: function (response) {
+					$('#loading').show()
+                },
+                success: function (response) {
+                    switch (response['r']) {
+                        case 'failed':
+                            fail();
+                            break;
+                        case 'success':
+							success();
+                            break;
+                        default:
+                            appBreak();
+                            break;
+                    }
+                }
+            }).done(function() {
+				$('#loading').hide()
+			});
+		});
 
 
         /* START AJAX USER ACCOUNT OPERATIONS */
@@ -245,61 +368,7 @@
             }).done(function() {
 				$('#loading').hide();
 			});
-        });
-
-
-
-
- /**
-         * send msg
-         */
-        $('#add-msg-form').submit(function (event) {
-            event.preventDefault();
-			var title = $('#msg-title').val();
-			var type = $('#msg-type').val();
-			var desc = get_tinymce_content('msg-desc');
-
-			$.ajax({
-				type: "POST",
-				dataType: 'JSON',
-				data: {
-					action: 'call_add_msg',
-					title: title,
-					desc: desc,
-					type: type
-				},				
-				beforeSend: function () {
-					$('#loading').show()
-				},
-				success: function (response) {
-					$("#msg-title").removeClass("input-error");
-					switch (response['r']) {
-						case 'empty':
-							$("#msg-title").addClass("input-error");
-							empty();
-							break;
-						case 'notValid':
-							$('#msg-title').addClass('input-error');
-							fail('Invalid fields.');
-							break;
-						case 'desc':
-							fail('The description is too short.');
-							break;
-						case 'success':
-							$('#msg-title').removeClass('input-error');
-							success();
-							break;
-						default:
-							fail(response['r']);
-							//appBreak();
-							break;
-					}
-				}
-			}).done(function() {
-				$('#loading').hide();
-			});
-
-        });
+        });		
 
     });
 })(jQuery);
@@ -340,6 +409,18 @@ function openPage(pageName) {
 		tablinks[i].classList.remove('profile-btn-select');
     }
     document.getElementById(pageName).style.display = "block";
+	
+	//change value of drop selector to the value of the pageName
+	var sel = document.getElementById('drop-selector');
+	var opts = sel.options;
+	for (var opt, j = 0; opt = opts[j]; j++) {
+		if (opt.value == pageName) {
+			sel.selectedIndex = j;
+			break;
+		}
+	}
+	
+
     var btn = document.getElementsByClassName('dash-' + pageName + '-btn');
     for (i = 0; i < btn.length; i++) {
         //btn[i].style.backgroundColor = 'grey';

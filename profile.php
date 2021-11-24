@@ -23,7 +23,7 @@ if (is_user_logged_in()) {
   switch ($currentRole) {
     case 'instructor':
       get_header();
-      include 'profile_instructor.php';
+      include 'template-parts/profile/profile_instructor.php';
       get_footer();
       break;
     case 'student':

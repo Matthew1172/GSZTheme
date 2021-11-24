@@ -578,22 +578,24 @@ function index_script_enqueue()
 	Add javascript files here, the comment below is an example, make sure the first parameter is unique, just keep parameters 3-5 the same
 	*/
 	//wp_enqueue_script('myFileJS', get_template_directory_uri() . '/assets/js/my-file.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('signupJS', get_template_directory_uri() . '/assets/js/signup-submit.js', array('jquery'), '1.0', true);
+	wp_enqueue_script('signupJS', get_template_directory_uri() . '/assets/js/signup_controls.js', array('jquery'), '1.0', true);
 	/* Student and instructor profile javascript controls */
-	wp_enqueue_script('profile_studentJS', get_template_directory_uri() . '/assets/js/profile_student_controls.js', array('jquery'), '1.0', true);
+	wp_enqueue_script('profileJS', get_template_directory_uri() . '/assets/js/profile_controls.js', array('jquery'), '1.0', true);
 
 
 	/*
 	Add css files here, the comment below is an example
 	*/
 	//wp_enqueue_style('myFileCSS', get_template_directory_uri() . '/assets/css/my-file.css');
+	/* Signup stylesheet */
+	wp_enqueue_style('signupCSS', get_template_directory_uri() . '/assets/css/signup_style.css');
 	/* Student and instructor profile stylesheets */
-	wp_enqueue_style('profile_studentCSS', get_template_directory_uri() . '/assets/css/profile_student_style.css');
+	wp_enqueue_style('profileCSS', get_template_directory_uri() . '/assets/css/profile_style.css');
 
 
 
 
-	//don't worry about this for now
+	//add logout url and logout button html so we can localize it in the config.js file where we append it to the navbar after loading the page
 	$logoutRaw = wp_loginout($_SERVER['REQUEST_URI'], false);
 	$logoutNav = "<li class='nav-item nav-link'>$logoutRaw<span class='dashicons dashicons-migrate pl-1'></span></li>";
 	
@@ -613,9 +615,9 @@ add_action('wp_enqueue_scripts', 'index_script_enqueue');
 Add php files with hook names matching the ajax function calls in JS file
 */
 
-//Signup php function
-require  get_template_directory() . '/inc/signup-function.php';
-//Student profile form submit
-require  get_template_directory() . '/inc/profile_student.php';
-//Class search form submit and query vars
+//Class search functions
 require  get_template_directory() . '/inc/search-classes-function.php';
+//Signup functions
+require  get_template_directory() . '/inc/signup-function.php';
+//Profile functions
+require  get_template_directory() . '/inc/profile-function.php';
