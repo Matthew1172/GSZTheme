@@ -529,7 +529,68 @@ function my_login_redirect($redirected_to, $requested_redirect_to, $user)
 }
 add_filter('login_redirect', 'my_login_redirect', 10, 3);
 
+function checkUsernameDB($x)
+{
+	global $wpdb;
+	$qry = $wpdb->get_results(
+		$wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "users WHERE user_login = %s", $x)
+	);
+	return $qry == true ? true : false;
+}
 
+function checkEmailDB($x)
+{
+	global $wpdb;
+	$qry = $wpdb->get_results(
+		$wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "users WHERE user_email = %s", $x)
+	);
+	return $qry == true ? true : false;
+}
+
+function valid_name($x)
+{
+	if (preg_match("/^[a-zA-Z]*$/", $x) && strlen($x) > 1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function valid_email($x)
+{
+	if (filter_var($x, FILTER_VALIDATE_EMAIL)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function valid_uid($x)
+{
+	if (preg_match("/^[a-zA-Z0-9]*$/", $x) && strlen($x) > 6) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function valid_pw($x)
+{
+	if (preg_match("/^[a-zA-Z0-9!?@$*&%]*$/", $x) && strlen($x) > 7) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function valid_student_gpa($x)
+{
+	if (is_numeric($x) && $x > 0 && $x <= 5) {
+		return true;
+	} else {
+		return false;
+	}
+}
 
 
 

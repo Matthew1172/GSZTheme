@@ -1,40 +1,4 @@
 <?php
-function valid_pw($x)
-{
-	if (preg_match("/^[a-zA-Z0-9!?@$*&%]*$/", $x) && strlen($x) > 7) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-function valid_email($x)
-{
-	if (filter_var($x, FILTER_VALIDATE_EMAIL)) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-function valid_name($x)
-{
-	if (preg_match("/^[a-zA-Z]*$/", $x) && strlen($x) > 1) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-function checkEmailDB($x)
-{
-	global $wpdb;
-	$qry = $wpdb->get_results(
-		$wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "users WHERE user_email = %s", $x)
-	);
-	return $qry == true ? true : false;
-}
-
 /* 
 Function add an msg
 */
