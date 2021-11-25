@@ -98,6 +98,7 @@ require 'inc/front-page-function.php';
 						<?php
 						$gp = 0.0;
 						$numOfFactors = 0.0;
+						$allGpas = array();
 						$classes_query = array('post_type' => 'gradschoolzeroclass');
 						$q = new WP_Query($classes_query);
 						if ($q->have_posts()) {
@@ -172,10 +173,10 @@ require 'inc/front-page-function.php';
 								}
 							}
 						}
-						if (count($allGpas) > 0) {
+						if ($allGpas != null) {
 							arsort($allGpas);
 						}
-						if (count($allGpas) > 0) {
+						if ($allGpas != null) {
 							array_slice($allGpas, 0, 5);
 						}
 						$i = 0;
