@@ -19,8 +19,9 @@ function enroll_class()
 	if (is_user_logged_in()) {
 		$titleDashUidDashEnroll = $_POST['titleDashUidDashEnroll'];
 		$title = explode('-', $titleDashUidDashEnroll)[0];
+		$new_title = str_replace(' ', '', $title);
 		$uid = explode('-', $titleDashUidDashEnroll)[1];
-		$enrollment_key = $title . "_enrollment";
+		$enrollment_key = strtolower($new_title) . "_enrollment";
 		$r = update_user_meta($uid, $enrollment_key, 'e'); 
 		if($r){
 			$response['r'] = 'success';
@@ -45,8 +46,9 @@ function waitlist_class()
 	if (is_user_logged_in()) {
 		$titleDashUidDashWaitlist = $_POST['titleDashUidDashWaitlist'];
 		$title = explode('-', $titleDashUidDashWaitlist)[0];
+		$new_title = str_replace(' ', '', $title);
 		$uid = explode('-', $titleDashUidDashWaitlist)[1];
-		$enrollment_key = $title . "_enrollment";
+		$enrollment_key = strtolower($new_title) . "_enrollment";
 		$r = update_user_meta($uid, $enrollment_key, 'wl'); 
 		if($r){
 			$response['r'] = 'success';
