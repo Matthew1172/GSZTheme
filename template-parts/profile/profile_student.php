@@ -57,22 +57,22 @@
 			$phase = get_user_meta($currentId, 'phase', true);
 			switch($phase){
 				case 'csp':
-				$phase = 'Course set-up period';
+				$phasePretty = 'Course set-up period';
 				break;
 				case 'crp':
-				$phase = 'Course registration period';
+				$phasePretty = 'Course registration period';
 				break;
 				case 'scrp':
-				$phase = 'Special course registration period';
+				$phasePretty = 'Special course registration period';
 				break;
 				case 'crup':
-				$phase = 'Course running period';
+				$phasePretty = 'Course running period';
 				break;
 				case 'gp':
-				$phase = 'Grading period';
+				$phasePretty = 'Grading period';
 				break;
 				case 'pgp':
-				$phase = 'Post grading period';
+				$phasePretty = 'Post grading period';
 				break;
 			}
 			echo "<h5 class='bColor2'>Warnings: <span class='bColor'>$warn</span></h5>";
