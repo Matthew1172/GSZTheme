@@ -229,12 +229,11 @@ if (!function_exists('gradschoolzero_setup')) {
 			$register_page_id = get_page_by_title('register', OBJECT, 'page');
 		}
 
-		// Set the title, template, etc
+		/*
 		$new_page_title     = __('Recover account', 'text-domain');
-		$new_page_content   = '';                           // Content goes here
-		$new_page_template  = 'recover.php';       // The template to use for the page
-		$page_check = get_page_by_title($new_page_title);   // Check if the page already exists
-		// Store the above data in an array
+		$new_page_content   = '';
+		$new_page_template  = 'recover.php';
+		$page_check = get_page_by_title($new_page_title);
 		$new_page = array(
 			'post_type'     => 'page',
 			'post_title'    => $new_page_title,
@@ -242,7 +241,6 @@ if (!function_exists('gradschoolzero_setup')) {
 			'post_status'   => 'publish',
 			'post_author'   => 1
 		);
-		// If the page doesn't already exist, create it
 		if (!isset($page_check->ID)) {
 			$recoveraccount_page_id = wp_insert_post($new_page);
 			if (!empty($new_page_template)) {
@@ -251,7 +249,7 @@ if (!function_exists('gradschoolzero_setup')) {
 		}else{
 			$recoveraccount_page_id = get_page_by_title('recover account', OBJECT, 'page');
 		}
-
+		*/
 		// Set the title, template, etc
 		$new_page_title     = __('Profile', 'text-domain');
 		$new_page_content   = '';                           // Content goes here
@@ -311,7 +309,7 @@ if (!function_exists('gradschoolzero_setup')) {
 		$contact_perma = get_permalink($contact_page_id);
 		$signin_perma = get_permalink($signin_page_id);
 		$register_perma = get_permalink($register_page_id);
-		$recoveraccount_perma = get_permalink($recoveraccount_page_id);
+		//$recoveraccount_perma = get_permalink($recoveraccount_page_id);
 		$profile_perma = get_permalink($profile_page_id);
 		$searchforclasses_perma = get_permalink($sfc_page_id);
 
@@ -360,14 +358,14 @@ if (!function_exists('gradschoolzero_setup')) {
 				'menu-item-url' => $register_perma,
 				'menu-item-status' => 'publish'
 			));
-
+/*
 			wp_update_nav_menu_item($menu_id, 0, array(
 				'menu-item-title' =>  __('Recover account'),
 				'menu-item-classes' => 'recover-account',
 				'menu-item-url' => $recoveraccount_perma,
 				'menu-item-status' => 'publish'
 			));
-
+*/
 			wp_update_nav_menu_item($menu_id, 0, array(
 				'menu-item-title' =>  __('Search classes'),
 				'menu-item-classes' => 'search-classes',
@@ -599,6 +597,8 @@ function index_script_enqueue()
 	wp_enqueue_script('signupJS', get_template_directory_uri() . '/assets/js/signup_controls.js', array('jquery'), '1.0', true);
 	/* Student and instructor profile javascript controls */
 	wp_enqueue_script('profileJS', get_template_directory_uri() . '/assets/js/profile_controls.js', array('jquery'), '1.0', true);
+	/* Single class page javascript controls */
+	wp_enqueue_script('classJS', get_template_directory_uri() . '/assets/js/single_class_controls.js', array('jquery'), '1.0', true);
 
 
 	/*
@@ -639,3 +639,5 @@ require  get_template_directory() . '/inc/search-classes-function.php';
 require  get_template_directory() . '/inc/signup-function.php';
 //Profile functions
 require  get_template_directory() . '/inc/profile-function.php';
+//Single class functions
+require  get_template_directory() . '/inc/single-class-function.php';
