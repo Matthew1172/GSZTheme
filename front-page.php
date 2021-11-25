@@ -84,5 +84,112 @@ require 'inc/front-page-function.php';
 		</div>
     </div>
   </div>
+	<div class="row">
+    <div class="col-md-12">
+		<h2>Deans List</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">Ranking</th>
+						<th scope="col">Student Name</th>
+						<th scope="col">GPA</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php
+				$gp = 0.0;
+				$numOfFactors = 0.0;
+				$classes_query = array('post_type' => 'gradschoolzeroclass');
+				$q = new WP_Query($classes_query);
+				if($q->have_posts()){
+						while($q->have_posts()){
+								$q->the_post();
+								$transcript_key = str_replace(" ", "", strtolower(get_the_title()))."_transcript";
+								$fgrade_key = str_replace(" ", "", strtolower(get_the_title())) . "_fgrade";
+								$blogusers = get_users(array('role__in' => array('student')));
+								foreach($blogusers as $user){
+										$uid = $user->ID;
+										$name = $user->display_name;
+										for($i = 1; $i < 5; $i++){
+												if(get_user_meta($uid, $transcript_key."_".strval($i), true) == "taken"){
+													$gf = get_user_meta($uid, $fgrade_key."_".strval($i), true);
+													switch($gf){
+                            case 'f':
+                                $gp += 0.0;
+                                $numOfFactors += 1.0;
+                                break;
+                            case 'd':
+                                $gp += 1.0;
+                                $numOfFactors += 1.0;
+                                break;
+                            case 'cm':
+                                $gp += 1.7;
+                                $numOfFactors += 1.0;
+                                break;
+                            case 'c':
+                                $gp += 2.0;
+                                $numOfFactors += 1.0;
+                                break;
+                            case 'cp':
+                                $gp += 2.3;
+                                $numOfFactors += 1.0;
+                                break;
+                            case 'bm':
+                                $gp += 2.7;
+                                $numOfFactors += 1.0;
+                                break;
+														case 'b':
+																$gp += 3.0;
+																$numOfFactors += 1.0;
+																$gf_p = 'B';
+																break;
+														case 'bp':
+																$gp += 3.3;
+																$numOfFactors += 1.0;
+																$gf_p = 'B+';
+																break;
+														case 'am':
+																$gp += 3.7;
+																$numOfFactors += 1.0;
+																$gf_p = 'A-';
+																break;
+														case 'a':
+																$gp += 4.0;
+																$numOfFactors += 1.0;
+																$gf_p = 'A';
+																break;
+														case 'ap':
+																$gp += 4.0;
+																$numOfFactors += 1.0;
+																$gf_p = 'A+';
+																break;
+													}
+												}
+												if($numOfFactors > 0){
+														$gpa = $gp/$numOfFactors;
+														$allGpas[$name] = $gpa;
+												}
+										}
+								}
+						}
+				}
+				arsort($allGpas);
+				array_slice($allGpas,0,5);
+				$i = 0;
+				foreach($allGpas as $name => $gpa){
+					$i++;
+					echo "<tr>";
+					echo "<td>$i</td>";
+					echo "<td>$name</td>";
+					echo "<td>$gpa</td>";
+					echo "</tr>";
+				}
+				?>
+				</tbody>
+			</table>
+		</div>
+    </div>
+  </div>
 </div>
 <?php get_footer(); ?>
