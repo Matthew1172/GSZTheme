@@ -15,7 +15,9 @@
     </div>
 </div>
 
-<footer>
+</body>
+
+<footer id="footer" class="footer">
     <div class="container">
         <div class="row py-5">
             <div class="col-sm-4">
@@ -47,7 +49,7 @@
             </div>
             <div class="col-sm-6">
                 <h5 class="footer-head"><b>Non-Discrimination Statement</b></h5>
-                <p class="text-muted">gradZERO promotes equal opportunity for all people without regard for race, color, creed, national origin, sex, age, lifestyle, sexual orientation, or disability.</p>
+                <p class="">gradZERO promotes equal opportunity for all people without regard for race, color, creed, national origin, sex, age, lifestyle, sexual orientation, or disability.</p>
             </div>
         </div>
         <div class="row">
@@ -58,6 +60,5 @@
     </div>
 </footer>
 <?php wp_footer(); ?>
-</body>
 
 </html>

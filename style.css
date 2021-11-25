@@ -9,10 +9,19 @@
   Text Domain: Team M
 */
 
+.banner{
+	background-color: #a074e1;
+}
 
 footer {
     /*background-color: #ededed;*/
+	background-color: #a074e1;
+	color: white;
     font-size: 12px;
+}
+
+footer a{
+	color: white;
 }
 
 footer ul {
@@ -21,11 +30,11 @@ footer ul {
 }
 
 .bColor {
-    color: #32fbe2;
+    color: #8040dd;
 }
 
 .bColor2 {
-    color: #28838b;
+    color: black;
 }
 
 .bWhite {

@@ -360,7 +360,7 @@
                         ?>
                     </div>
                 </div>
-                <button type='submit' class='w-25 btn btn-primary main-btn'>Send message</button>
+                <button type='submit' class='w-50 btn btn-primary main-btn'>Send message</button>
             </form>
 			
             <hr />

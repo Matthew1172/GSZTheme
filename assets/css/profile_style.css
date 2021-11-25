@@ -20,7 +20,8 @@ Description: This is the style sheet for handling the student profile
 /* Style tab links */
 
 .tablink {
-    background-color: #28838b;
+    background-color: #FFFFFF;
+	color: black;
     float: left;
     border: none;
     outline: none;
@@ -33,7 +34,7 @@ Description: This is the style sheet for handling the student profile
 }
 
 .tablink:hover {
-    background-color: #32fbe2;
+    background-color: #8040dd;
     color: black;
 }
 
@@ -41,9 +42,11 @@ Description: This is the style sheet for handling the student profile
     width: 100%;
 }
 
+/*
 .banner {
     background-color: #5724a3;
 }
+*/
 
 .heading {
     padding-top: 60px;
@@ -55,5 +58,5 @@ Description: This is the style sheet for handling the student profile
 }
 
 .profile-btn-select {
-    background-color: #1b1d3c;
+    background-color: #C3C3C3;
 }

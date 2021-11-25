@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head id="header">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,9 +28,9 @@
 
 </head>
 
-<body>
+<body id="content">
     <div class="">
-        <nav id="navbar" class="navbar navbar-expand-md navbar-light bg-light container">
+        <nav id="navbar" class="navbar navbar-expand-md navbar-light bg-white container">
   <div class="container-fluid">
   <a class="navbar-brand" href="<?php echo home_url(); ?>"><img style="width: 80%;" id="logo" src="<?php echo get_template_directory_uri(); ?>/assets/pictures/logo.jpg" /></a>
 

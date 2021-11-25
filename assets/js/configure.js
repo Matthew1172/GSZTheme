@@ -1,6 +1,12 @@
 (function($) {
 	$(document).ready(function() {
 		
+			$('#footer').css('margin-top',
+			  $(document).height() 
+			  - ( $('#header').height() + $('#content').height() )
+			  + $('#footer').height()/3
+			);
+		
 			//Style the sign in form in javascript because we're using the wordpress function to display the form
 			$('#login_form').addClass("text-center");
 			$('#login_username').addClass("form-control");
