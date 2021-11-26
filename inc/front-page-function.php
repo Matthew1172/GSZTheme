@@ -46,14 +46,6 @@ foreach ($reviews as $review) :
     endforeach;
 endforeach;
 
-// echo('id --- name --- rating </p>');
-
-/*
-foreach ($class_ratings as $rating) :
-    echo($rating->getClass_id() . ' --- ' . $rating->getClass_name() . ' --- ' . $rating->getClass_rating());
-    echo('<p/>');
-endforeach;*/
-
 $average_ratings = array();
 
 foreach($classes as $class) :
@@ -91,12 +83,6 @@ foreach($classes as $class) :
     $average = 0;
     $temp_ratings = array(); // $temp_array is reinstantiated
 endforeach;
-
-// echo('id' . '-------' . 'class_name' . '------' . 'average rating' . '</p>');
-/*foreach ($average_ratings as $average) :
-    echo($average->getClass_id() . '-------' . $average->getClass_name() . '------' . $average->getAverage_rating());
-    echo('</p>');
-endforeach;*/
 
 // Asc sort
 usort($average_ratings, function($first,$second){
