@@ -214,7 +214,8 @@ if (have_posts()) {
 								echo "<span class='w-100'>You're currently waitlisted for this class, however it is still closed. Please try again another time.</span>";
 							}
 						} else if ($en == 'e') {
-							echo "<span class='w-100'>You're currently enrolled in this class.</span>";
+							echo "<span class='w-100'>You are currently enrolled in this class. If you would like to drop the class, please click below to withdraw.</span> </p>";
+							echo "<button id='$title-$uid-withdraw' class='drop-class btn btn-primary w-100'>Withdraw</button>";
 						}
 						?>
 					</div>
