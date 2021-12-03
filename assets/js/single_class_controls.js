@@ -43,7 +43,7 @@
                 dataType: 'JSON',
                 data: {
                     action: 'call_drop_class',
-                    titleDashUidDashEnroll: titleDashUidDashWithdraw
+                    titleDashUidDashWithdraw: titleDashUidDashWithdraw
                 },
 				beforeSend: function () {
 					$('#loading').show()
