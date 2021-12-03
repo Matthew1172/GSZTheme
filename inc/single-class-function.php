@@ -34,6 +34,33 @@ function enroll_class()
 	wp_send_json($response);
 }
 
+/*
+Function for a student to drop a class
+*/
+add_action('wp_ajax_call_drop_class', 'drop_class');
+function drop_class()
+{
+	$response = array(
+		'r' => ''
+	);
+	if (is_user_logged_in()) {
+		$titleDashUidDashWithdraw = $_POST['titleDashUidDashWithdraw'];
+		$title = explode('-', $titleDashUidDashWithdraw)[0];
+		$new_title = str_replace(' ', '', $title);
+		$uid = explode('-', $titleDashUidDashWithdraw)[1];
+		$enrollment_key = strtolower($new_title) . "_enrollment";
+		$r = update_user_meta($uid, $enrollment_key, 'ne');
+		if($r){
+			$response['r'] = 'success';
+		}else{
+			$response['r'] = 'failed';
+		}
+	} else {
+		$response['r'] = 'failed';
+	}
+	wp_send_json($response);
+}
+
  /*
 Function for a student to waitlist a class
 */

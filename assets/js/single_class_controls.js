@@ -32,6 +32,39 @@
 				$('#loading').hide();
 			});
 		});
+
+        /*
+		Function for student to drop a class
+		*/
+		$(document).on('click', '.drop-class', function () {
+            var titleDashUidDashWithdraw = $(this).attr('id');
+			$.ajax({
+                type: "POST",
+                dataType: 'JSON',
+                data: {
+                    action: 'call_drop_class',
+                    titleDashUidDashWithdraw: titleDashUidDashWithdraw
+                },
+				beforeSend: function () {
+					$('#loading').show()
+                },
+                success: function (response) {
+                    switch (response['r']) {
+                        case 'failed':
+                            fail();
+                            break;
+                        case 'success':
+							success();
+                            break;
+                        default:
+                            appBreak();
+                            break;
+                    }
+                }
+            }).done(function() {
+				$('#loading').hide();
+			});
+		});
 		
 		
 		/*
