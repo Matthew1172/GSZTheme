@@ -17,7 +17,29 @@ require 'inc/front-page-function.php';
 		<h1 class="text-white">Welcome to Grad School Zero.</h1>
 	</div>
 </div>
+
 <div class="container">
+	<div class="row">
+		<div class="col-md-10">
+			<h2>Description </h2>
+			<hr>
+			<p>Grad School Zero is a college graduate program management
+			application developed by Team M, capable of administering existing and incoming
+			students, instructors, and registrar employees. It includes key features such as a class 
+			enrollment system, a class rating system, a user complaint system, and
+			a grading system. 
+			</p>
+		</div>
+		<div class="col-md-2">
+			<br><br><br><br>
+			<?php
+			$about_page_id = get_page_by_title('about', OBJECT, 'page');
+			$perma = get_permalink($about_page_id);
+			echo "<a href='$perma;' class='enroll-class btn btn-primary w-100'>Read More</a>"
+			?>
+		</div>
+	</div>
+	<br>
 	<div class="row">
 		<div class="col-md-12">
 			<h2 class="">Registrar announcements</h2>
