@@ -201,21 +201,22 @@ if (have_posts()) {
 						//only display this area if the student is not enrolled
 						//NOTE: a student can enroll or waitlist if taken before, because multiple attempts are allowed, even if that student got an A+
 						$enrollment_key = str_replace(" ", "", strtolower($title)) . "_enrollment";
+						$id_title = strtolower(str_replace(' ', '', $title)); 
 						$en = get_user_meta($uid, $enrollment_key, true);
 						if ($en != 'e') {
 							//display enroll or waitlist button
 							if ($stu_count < $cap) {
 								//display enroll button
-								echo "<button id='$title-$uid-enroll' class='enroll-class btn btn-primary w-100'>Enroll</button>";
+								echo "<button id='$id_title-$uid-enroll' class='enroll-class btn btn-primary w-100'>Enroll</button>";
 							} else if ($en != 'wl') {
 								//display waitlist button
-								echo "<button id='$title-$uid-waitlist' class='waitlist-class btn btn-primary w-100'>Waitlist</button>";
+								echo "<button id='$id_title-$uid-waitlist' class='waitlist-class btn btn-primary w-100'>Waitlist</button>";
 							} else {
 								echo "<span class='w-100'>You're currently waitlisted for this class, however it is still closed. Please try again another time.</span>";
 							}
 						} else if ($en == 'e') {
 							echo "<span class='w-100'>You are currently enrolled in this class. If you would like to drop the class, please click below to withdraw.</span> </p>";
-							echo "<button id='$title-$uid-withdraw' class='drop-class btn btn-primary w-100'>Withdraw</button>";
+							echo "<button id='$id_title-$uid-withdraw' class='drop-class btn btn-primary w-100'>Withdraw</button>";
 						}
 						?>
 					</div>
