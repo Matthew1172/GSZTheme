@@ -160,7 +160,7 @@ if (have_posts()) {
 							$comment_content = $c->comment_content;
 
 							$comment_rating = get_comment_meta($c->comment_ID, 'rat', true);
-							$sum += $comment_rating;
+							// $sum += $comment_rating; //this line is causing an error
 							echo '<tr>';
 							echo "<td>$comment_date_pretty</td>";
 							echo "<td>$comment_content</td>";
@@ -175,10 +175,11 @@ if (have_posts()) {
 					echo '</tbody>';
 					echo "</table>";
 					echo "</div>";
-					if ($comment_count > 0) {
-						$avg = $sum / $comment_count;
-						echo "<h5>Average rating: $avg</h5>";
-					}
+					// if ($comment_count > 0) {
+					// 	$avg = $sum / $comment_count;
+					// 	echo "<h5>Average rating: $avg</h5>";
+					// }
+					//get_average_ratings($id);
 					?>
 				</div>
 			</div>
@@ -241,6 +242,8 @@ if (have_posts()) {
 								$prev_review = true;
 							}
 						}
+
+						comments_template();
 
 						?>
 					</div>

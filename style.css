@@ -71,3 +71,32 @@ footer ul {
     top: 50%;
     left: 50%;
 }
+
+/* Ratings CSS */
+
+.comment-rating {float:left; width:180px;}
+.star-rating,
+.star-rating a:hover,
+.star-rating a:active,
+.star-rating a:focus,
+.star-rating .current-rating{background: url(images/star.png) left -1000px repeat-x;}
+.star-rating{position:relative;width:108px;height:25px;overflow:hidden;list-style:none;margin:0;padding:0;
+             background-position: left top;}
+.star-rating li{display: inline;}
+.star-rating a,
+.star-rating .current-rating{position:absolute;top:0;left:0;text-indent:-1000em;height:25px;line-height:25px;
+                             outline:none;overflow:hidden;border: none;}
+.star-rating a:hover,
+.star-rating a:active,
+.star-rating a:focus{background-position: left bottom;}
+.star-rating a.one-star{width:34%;z-index:6;}
+.star-rating a.two-stars{width:51%;z-index:5;}
+.star-rating a.three-stars{width:68%;z-index:4;}
+.star-rating a.four-stars{width:85%;z-index:3;}
+.star-rating a.five-stars{width:100%;z-index:2;}
+.star-rating .current-rating{z-index:1;background-position: left center;}
+.star-rating a.zero-star {width:17%;z-index:8;background: url(images/no_star.png) left top no-repeat;}
+.star-rating a.zero-star:hover,
+.star-rating a.zero-star:active,
+.star-rating a.zero-star:focus {background-position: left center;}
+.star-rating a.zero-selected {background-position: left center;}
