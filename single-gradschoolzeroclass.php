@@ -210,6 +210,7 @@ if (have_posts()) {
 			$info = get_userdata($uid);
 			$role = $info ? $info->roles[0] : 'none';
 			$phase = get_user_meta($uid, 'phase', true);
+			$status = get_user_meta($uid, 'status', true);
 			if ($role == 'student') :
 				//display html button for enroll to class if capacity is not full
 				//if it is, diplay a waitlist button
@@ -320,16 +321,21 @@ if (have_posts()) {
 							echo "<span class='w-100'>You do not meet the pre-requisites for this class.</span>";
 						} else if ($time_conflict) {
 							echo "<span class='w-100'>This class has a time conflict with another class you're currently enrolled in.</span>";
-						} else {
-							//display enroll or waitlist button
-							if ($stu_count < $cap) {
-								//display enroll button
-								echo "<button id='$id_title-$uid-enroll' class='enroll-class btn btn-primary w-100'>Enroll</button>";
-							} else if ($en != 'wl') {
-								//display waitlist button
-								echo "<button id='$id_title-$uid-waitlist' class='waitlist-class btn btn-primary w-100'>Waitlist</button>";
+						} else { //display enroll or waitlist button
+							// if we're in the course registration period
+							if ($phase == "crp" && $status == "mat") {
+								if ($stu_count < $cap) {
+									//display enroll button
+									echo "<button id='$id_title-$uid-enroll' class='enroll-class btn btn-primary w-100'>Enroll</button>";
+								} else if ($en != 'wl') {
+									//display waitlist button
+									echo "<button id='$id_title-$uid-waitlist' class='waitlist-class btn btn-primary w-100'>Waitlist</button>";
+								} else {
+									echo "<span class='w-100'>You're currently waitlisted for this class; however, it is still closed. Please try again another time.</span>";
+								}
+							// else, we can only view the course
 							} else {
-								echo "<span class='w-100'>You're currently waitlisted for this class, however it is still closed. Please try again another time.</span>";
+								echo "<span class='w-100'>You are currently viewing the class. You must be matriculated and in Course Registration Period to join.</span>";
 							}
 						}
 
