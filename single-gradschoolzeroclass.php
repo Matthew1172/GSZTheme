@@ -312,39 +312,93 @@ if (have_posts()) {
 								}
 							}
 						}
-						if ($en == 'e' && $phase == 'crup') {
-							echo "<span class='w-100'>You are currently enrolled in this class. If you would like to drop the class, please click below to withdraw.</span>";
+
+						switch ($status) {
+							case 'mat':
+								$statusPretty = 'Matriculated';
+								break;
+							case 'sus':
+								$statusPretty = 'Suspended';
+								break;
+							case 'exp':
+								$statusPretty = 'Expelled';
+								break;
+						}
+						switch ($phase) {
+							case 'csp':
+								$phasePretty = 'Course set-up period';
+								break;
+							case 'crp':
+								$phasePretty = 'Course registration period';
+								break;
+							case 'scrp':
+								$phasePretty = 'Special course registration period';
+								break;
+							case 'crup':
+								$phasePretty = 'Course running period';
+								break;
+							case 'gp':
+								$phasePretty = 'Grading period';
+								break;
+							case 'pgp':
+								$phasePretty = 'Post grading period';
+								break;
+						}
+
+						$p = $en == 'e' ? true : false;
+						$q = $phase == 'crp' ? true : false;
+						$m = $phase == 'scrp' ? true : false;
+						$k = $phase == 'crup' ? true : false;
+						$j = $phase == 'gp' ? true : false;
+						$n = $status == 'mat' ? true : false;
+
+						if ($p) {
+							echo "<span class='w-100'>You're currently enrolled in this class.</span><br>";
+						}
+
+						if ($p && ($q || $m || $k || $j)) {
+							echo "<span class='w-100'>If you would like to drop the class, please click below to withdraw.</span><br>";
+							echo "<span class='w-100 text-red'>Please note that if you're currently in any phase other than the course registration period or the special course registration period, you will recieve a grade of W on your transcript. You're currently in the phase: $phasePretty</span><br>";
 							echo "<button id='$id_title-$uid-withdraw' class='drop-class btn btn-primary w-100'>Withdraw</button>";
-						} else if ($en == 'e' && $phase != 'crup') {
-							echo ('You cannot drop this class. Please try again during Class Running Period.');
 						} else if (!$satisfy_pre) {
 							echo "<span class='w-100'>You do not meet the pre-requisites for this class.</span>";
 						} else if ($time_conflict) {
 							echo "<span class='w-100'>This class has a time conflict with another class you're currently enrolled in.</span>";
-						} else { //display enroll or waitlist button
-							// if we're in the course registration period
-							if ($phase == "crp" && $status == "mat") {
-								if ($stu_count < $cap) {
-									//display enroll button
-									echo "<button id='$id_title-$uid-enroll' class='enroll-class btn btn-primary w-100'>Enroll</button>";
-								} else if ($en != 'wl') {
-									//display waitlist button
-									echo "<button id='$id_title-$uid-waitlist' class='waitlist-class btn btn-primary w-100'>Waitlist</button>";
-								} else {
-									echo "<span class='w-100'>You're currently waitlisted for this class; however, it is still closed. Please try again another time.</span>";
-								}
-							// else, we can only view the course
+						} else if (!$n) {
+							echo "<span class='w-100'>You must be a matriculated student to enroll. Your status is currently: $statusPretty</span>";
+						} else if (!($q || $m)) {
+							echo "<span class='w-100'>You must be either in the course registration period or the special course registration period to enroll. You're currently in the phase: $phasePretty</span>";
+						} else {
+							//display enroll or waitlist button
+							if ($stu_count < $cap) {
+								//display enroll button
+								echo "<button id='$id_title-$uid-enroll' class='enroll-class btn btn-primary w-100'>Enroll</button>";
+							} else if ($en != 'wl') {
+								//display waitlist button
+								echo "<button id='$id_title-$uid-waitlist' class='waitlist-class btn btn-primary w-100'>Waitlist</button>";
 							} else {
-								echo "<span class='w-100'>You are currently viewing the class. You must be matriculated and in Course Registration Period to join.</span>";
+								echo "<span class='w-100'>You're currently waitlisted for this class, however it is still closed. Please try again another time.</span>";
 							}
 						}
+
 
 						?>
 					</div>
 
 					<div class="col-md-8">
 						<?php
-						//display comment area if student hasn't left a previous comment on this class
+						//display comment area if student hasn't left a previous comment on this class, and either has this class on transcript or they're enrolled and in the appropraite phase
+
+						//check if student has this class on their transcript
+						$taken = false;
+						$transcript_key = str_replace(" ", "", strtolower($title)) . "_transcript";
+						for ($i = 1; $i < 5; $i++) {
+							if (get_user_meta($uid, $transcript_key . "_" . strval($i), true) == "taken") {
+								//this student has taken this class on some attempt 1->5
+								$taken = true;
+							}
+						}
+
 
 						$prev_review = false;
 						foreach ($comments as $c) {
@@ -357,12 +411,13 @@ if (have_posts()) {
 						switch ($phase) {
 							case 'crup':
 							case 'gp':
-								if (!$prev_review) {
-									comments_template();
-								} else {
+								if ($prev_review) {
 									echo "<span>You have already left a review for this class.</span>";
+								} else if (!($taken || $p)) {
+									echo "<span>You have to have already taken this class or be currently enrolled to leave a review.</span>";
+								} else {
+									comments_template();
 								}
-
 								break;
 							default:
 								echo "<span>You can only leave a review during the course running period, or the grading period.</span>";
