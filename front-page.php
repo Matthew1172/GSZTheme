@@ -33,7 +33,7 @@ if($q->have_posts()){
 		if ($comment_count > 0) {
 			foreach ($comments as $c) {
 				$comment_rating = get_comment_meta($c->comment_ID, 'rating', true);
-				$sum += $comment_rating;
+				$sum += (float)$comment_rating;
 			}
 			$avg = $sum / $comment_count;
 			$key = "<a href='$link'>$title</a>";
