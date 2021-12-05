@@ -87,3 +87,176 @@ function waitlist_class()
 	}
 	wp_send_json($response);
 }
+
+/**
+ * Check the two time periods overlap
+ *
+ * Example:
+ * $periods = [
+ *      ['start_time' => "09:00", 'end_time' => '10:30'],
+ *      ['start_time' => "14:30", "end_time" => "16:30"],
+ *      ['start_time' => "11:30", "end_time" => "13:00"],
+ *      ['start_time' => "10:30", "end_time" => "11:30"],
+ * ]
+ *
+ * @param $periods
+ * @param string $start_time_key
+ * @param string $end_time_key
+ * @return bool
+ */
+function isOverlapped($periods, $start_time_key = 'start_time', $end_time_key = 'end_time')
+{
+    // order periods by start_time
+    usort($periods, function ($a, $b) use ($start_time_key, $end_time_key) {
+        return strtotime($a[$start_time_key]) <=> strtotime($b[$end_time_key]);
+    });
+    // check two periods overlap
+    foreach ($periods as $key => $period) {
+        if ($key != 0) {
+            if (strtotime($period[$start_time_key]) < strtotime($periods[$key - 1][$end_time_key])) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function datesOverlap($start_one,$end_one,$start_two,$end_two) {
+   if($start_one <= $end_two && $end_one >= $start_two) { //If the dates overlap
+        return true;
+   }
+   return false;
+}
+
+// Add custom meta (ratings) fields to the default comment form
+// Default comment form includes name, email address and website URL
+// Default comment form elements are hidden when user is logged in
+
+// Add fields after default fields above the comment box, always visible
+
+add_action( 'comment_form_logged_in_after', 'additional_fields' );
+add_action( 'comment_form_after_fields', 'additional_fields' );
+
+function additional_fields () {
+  echo '<p class="comment-form-rating">'.
+  '<label for="rating">'. __('Rating') . '<span class="required">*</span></label>
+  <span class="commentratingbox">';
+
+    //Current rating scale is 1 to 5. If you want the scale to be 1 to 10, then set the value of $i to 10.
+    for( $i=1; $i <= 5; $i++ )
+    echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"/>'. $i .'</span>';
+
+  echo'</span></p>';
+}
+// Save the comment meta data along with comment
+
+add_action( 'comment_post', 'save_comment_meta_data' );
+function save_comment_meta_data( $comment_id ) {
+	if (isset($_POST['rating'])){
+		$rating = wp_filter_nohtml_kses($_POST['rating']);
+		add_comment_meta( $comment_id, 'rating', $rating );
+	}
+}
+// Add the filter to check whether the comment meta data has been filled
+
+add_filter( 'preprocess_comment', 'verify_comment_meta_data' );
+function verify_comment_meta_data( $commentdata ) {
+	$p = isset($_POST['rating']);
+	$q = current_user_can('administrator');
+	$k = is_admin();
+	if (!$p && !($q && $k)){
+		wp_die( __( 'Error: You did not add a rating. Hit the Back button on your Web browser and resubmit your comment with a rating.' ) );
+	}
+	return $commentdata;
+}
+// Add the comment meta (saved earlier) to the comment text
+// You can also output the comment meta values directly to the comments template  
+
+add_filter( 'comment_text', 'modify_comment');
+function modify_comment( $text ){
+	if( $commentrating = get_comment_meta( get_comment_ID(), 'rating', true ) ) {
+		//$commentrating = '<p class="comment-rating"><br/>Rating: <strong>'. review(absint($commentrating)) .'</strong></p>';
+		$rating = review(absint($commentrating));
+		$text = $text . $rating;
+		return $text;
+	} else {
+		return $text;
+	}
+}
+// Add an edit option to comment editing screen
+
+function extend_comment_meta_box ( $comment ) {
+    $rating = get_comment_meta( $comment->comment_ID, 'rating', true );
+    wp_nonce_field( 'extend_comment_update', 'extend_comment_update', false );
+    ?>
+    <p>
+		<label for="rating"><?php _e( 'Rating: ' ); ?></label>
+		<span class="commentratingbox">
+		<?php 
+		for( $i=1; $i <= 5; $i++ ) {
+			echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"';
+			if ( $rating == $i ){
+				echo ' checked="checked"';
+			}
+			echo ' />'. $i .' </span>';
+		}
+		?>
+		</span>
+    </p>
+    <?php
+}
+
+// Update comment meta data from comment editing screen 
+add_action( 'edit_comment', 'extend_comment_edit_metafields' );
+function extend_comment_edit_metafields( $comment_id ) {
+    if( ! isset( $_POST['extend_comment_update'] ) || ! wp_verify_nonce( $_POST['extend_comment_update'], 'extend_comment_update' ) ){
+		return;
+	}
+
+	if ( ( isset( $_POST['rating'] ) ) && ( $_POST['rating'] != ’) ){
+		$rating = wp_filter_nohtml_kses($_POST['rating']);
+		update_comment_meta( $comment_id, 'rating', $rating );
+	}else{
+		delete_comment_meta( $comment_id, 'rating');
+	}
+}
+
+function review($rating) {
+    switch ($rating) {
+        case '0':
+            $alt = 'Zero';
+            break;
+        case '1':
+            $alt = 'Very Bad';
+            break;
+        case '2':
+            $alt = 'Bad';
+            break;
+        case '3':
+            $alt = 'Good';
+            break;
+        case '4':
+            $alt = 'Very Good';
+            break;
+        case '5':
+            $alt = 'Excellent';
+            break;
+        default:
+            $alt = 'No Rating';
+            break;
+    }
+ 
+	$html = "";
+    if(isset($rating) && $rating != ''){
+        for ($i = 0; $i < 5; $i++) {
+            if ($rating > $i)
+                $html .= '<img src="'.get_stylesheet_directory_uri().'/images/star_on.png" alt="'.$alt.'" title="'.$alt.'" />';
+            else
+                $html .= '<img src="'.get_stylesheet_directory_uri().'/images/star_off.png" alt="'.$alt.'" title="'.$alt.'" />';
+        }
+	} else {
+		$html .= $alt;
+    }
+	return $html;
+}
+

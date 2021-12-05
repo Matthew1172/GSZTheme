@@ -10,7 +10,37 @@
  * @since gradschoolzero 1.0
  */
 get_header();
-require 'inc/front-page-function.php';
+//require 'inc/front-page-function.php';
+
+$ratings = array();
+$classes_query = array('post_type' => 'gradschoolzeroclass');
+$q = new WP_Query($classes_query);
+if($q->have_posts()){
+	while($q->have_posts()){
+		$q->the_post();
+		$pid = get_the_id();
+		$link = get_permalink();
+		$title = get_the_title();
+		$args = array(
+			'post_id' => $pid, 
+			'status' => 'approve'
+		);
+		
+		$comments = get_comments($args);
+		$avg = 0.0;
+		$sum = 0;
+		$comment_count = count($comments);
+		if ($comment_count > 0) {
+			foreach ($comments as $c) {
+				$comment_rating = get_comment_meta($c->comment_ID, 'rating', true);
+				$sum += $comment_rating;
+			}
+			$avg = $sum / $comment_count;
+			$key = "<a href='$link'>$title</a>";
+			$ratings[$key] = $avg;
+		}
+	}
+}						
 ?>
 <div class="banner mb-5">
 	<div class="heading container">
@@ -31,15 +61,13 @@ require 'inc/front-page-function.php';
 			</p>
 		</div>
 		<div class="col-md-2">
-			<br><br><br><br>
 			<?php
 			$about_page_id = get_page_by_title('about', OBJECT, 'page');
 			$perma = get_permalink($about_page_id);
-			echo "<a href='$perma;' class='enroll-class btn btn-primary w-100'>Read More</a>"
+			echo "<a href='$perma' class='btn btn-primary w-100'>Read More</a>"
 			?>
 		</div>
 	</div>
-	<br>
 	<div class="row">
 		<div class="col-md-12">
 			<h2 class="">Registrar announcements</h2>
@@ -80,7 +108,6 @@ require 'inc/front-page-function.php';
 			</div>
 		</div>
 	</div>
-	<hr>
 	<div class="row">
 		<div class="col-md-12">
 			<h2>Highest Rated Classes </h2>
@@ -93,18 +120,21 @@ require 'inc/front-page-function.php';
 						</tr>
 					</thead>
 					<tbody>
-						<?php
-						foreach ($average_ratings as $average) :
-							echo ('<tr> <th class="w-5">' . $average->getClass_name() . '</th>
-									<th class="w-5">' . $average->getAverage_rating() . '</th> </tr>');
-						endforeach;
+						<?php						
+						if(count($ratings) > 0){
+							arsort($ratings);
+							foreach($ratings as $key => $val){
+								echo("<tr><th class='w-5'>$key</th><th class='w-5'>$val</th></tr>");
+							}
+						}else{
+							echo("<tr><th class='w-10'>There are no reviews for any classes at this time.</th></tr>");
+						}
 						?>
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="col-md-12">
 			<h2>Lowest Rated Classes</h2>
@@ -118,11 +148,14 @@ require 'inc/front-page-function.php';
 					</thead>
 					<tbody>
 						<?php
-						sort($average_ratings);
-						foreach ($average_ratings as $average) :
-							echo ('<tr> <th class="w-5">' . $average->getClass_name() . '</th>
-									<th class="w-5">' . $average->getAverage_rating() . '</th> </tr>');
-						endforeach;
+						if(count($ratings) > 0){
+							asort($ratings);
+							foreach($ratings as $key => $val){
+								echo("<tr><th class='w-5'>$key</th><th class='w-5'>$val</th></tr>");
+							}
+						}else{
+							echo("<tr><th class='w-10'>There are no reviews for any classes at this time.</th></tr>");
+						}
 						?>
 					</tbody>
 				</table>
@@ -144,19 +177,22 @@ require 'inc/front-page-function.php';
 					</thead>
 					<tbody>
 						<?php
+						$allGpas = array();
 						$gp = 0.0;
 						$numOfFactors = 0.0;
-						$classes_query = array('post_type' => 'gradschoolzeroclass');
-						$q = new WP_Query($classes_query);
-						if ($q->have_posts()) {
-							while ($q->have_posts()) {
-								$q->the_post();
-								$transcript_key = str_replace(" ", "", strtolower(get_the_title())) . "_transcript";
-								$fgrade_key = str_replace(" ", "", strtolower(get_the_title())) . "_fgrade";
-								$blogusers = get_users(array('role__in' => array('student')));
-								foreach ($blogusers as $user) {
-									$uid = $user->ID;
-									$name = $user->display_name;
+						$blogusers = get_users(array('role__in' => array('student')));
+						foreach ($blogusers as $user) {
+							$uid = $user->ID;
+							$name = $user->display_name;
+							
+							$classes_query = array('post_type' => 'gradschoolzeroclass');
+							$q = new WP_Query($classes_query);
+							if ($q->have_posts()) {
+								while ($q->have_posts()) {
+									$q->the_post();
+									$transcript_key = str_replace(" ", "", strtolower(get_the_title())) . "_transcript";
+									$fgrade_key = str_replace(" ", "", strtolower(get_the_title())) . "_fgrade";
+									
 									for ($i = 1; $i < 5; $i++) {
 										if (get_user_meta($uid, $transcript_key . "_" . strval($i), true) == "taken") {
 											$gf = get_user_meta($uid, $fgrade_key . "_" . strval($i), true);
@@ -212,25 +248,34 @@ require 'inc/front-page-function.php';
 													break;
 											}
 										}
-										if ($numOfFactors > 0) {
-											$gpa = $gp / $numOfFactors;
-											$allGpas[$name] = $gpa;
-										}
 									}
 								}
 							}
+							
+							if ($numOfFactors > 0) {
+								$gpa = $gp / $numOfFactors;
+								$allGpas[$name] = $gpa;
+							}
+							$gp = 0.0;
+							$numOfFactors = 0.0;
 						}
-						arsort($allGpas);
-						array_slice($allGpas, 0, 5);
-						$i = 0;
-						foreach ($allGpas as $name => $gpa) {
-							$i++;
-							echo "<tr>";
-							echo "<td>$i</td>";
-							echo "<td>$name</td>";
-							echo "<td>$gpa</td>";
-							echo "</tr>";
+						
+						if(count($allGpas) > 0){
+							arsort($allGpas);
+							array_slice($allGpas, 0, 5);
+							$i = 0;
+							foreach ($allGpas as $name => $gpa) {
+								$i++;
+								echo "<tr>";
+								echo "<td>$i</td>";
+								echo "<td>$name</td>";
+								echo "<td>$gpa</td>";
+								echo "</tr>";
+							}
+						}else{
+							echo "<tr><td>There is no deanslist at this time.</td></tr>";
 						}
+
 						?>
 					</tbody>
 				</table>
