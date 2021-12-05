@@ -181,7 +181,7 @@ if (have_posts()) {
 									$comment_content = $c->comment_content;
 
 									$comment_rating = get_comment_meta($c->comment_ID, 'rating', true);
-									$sum += $comment_rating; //this line is causing an error
+									$sum += (float)$comment_rating; //this line is causing an error
 									$comment_rating = review($comment_rating);
 									echo '<tr>';
 									echo "<td>$comment_date_pretty</td>";
