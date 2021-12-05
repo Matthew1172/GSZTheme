@@ -592,109 +592,25 @@ function valid_student_gpa($x)
 
 add_action('after_setup_theme', 'remove_admin_bar');
 function remove_admin_bar() {
-if (!current_user_can('administrator') && !is_admin()) {
-  show_admin_bar(false);
-}
-}
-
-add_action('comment_post','comment_ratings');
- 
-function comment_ratings($comment_id) {
-    add_comment_meta($comment_id, 'rat', true);
+	if (!current_user_can('administrator') && !is_admin()) {
+	  show_admin_bar(false);
+	}
 }
 
-function comment_template($comment, $args, $depth) {
-    $GLOBALS['comment'] = $comment; ?>
-    <li style="list-style-type:none;"<?php comment_class(); ?> id="li-comment-<?php comment_ID() ?>">
-        <div id="comment-<?php comment_ID(); ?>">
-            <div class="comment-author vcard">
-                <?php echo get_avatar($comment,$size='48'); ?>
- 
-                <?php printf(__('<cite class="fn">%s</cite> <span class="says">says:</span>'), get_comment_author_link()) ?>
-            </div>
- 
-            <?php if ($comment->comment_approved == '0') : ?>
-            <em><?php _e('Your comment is awaiting moderation.') ?></em>
-            <br />
-            <?php endif; ?>
- 
-            <div class="comment-meta commentmetadata"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>"><?php printf(__('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?></a><?php edit_comment_link(__('(Edit)'),'  ','') ?></div>
- 
-            <?php
-			comment_ratings($comment->comment_ID);
-            $rat = get_comment_meta($comment->comment_ID, 'rat', true);
-            if (!empty($rat)) {
-                _e('Grade: ');
-                echo review($rat[0]);
-            }
-            ?>
- 
-            <?php comment_text() ?>
 
-        </div>
-<?php
-}
 
-function review($rating) {
-    switch ($rating) {
-        case '0':
-            $alt = 'Zero';
-            break;
-        case '1':
-            $alt = 'Very Bad';
-            break;
-        case '2':
-            $alt = 'Bad';
-            break;
-        case '3':
-            $alt = 'Good';
-            break;
-        case '4':
-            $alt = 'Very Good';
-            break;
-        case '5':
-            $alt = 'Excellent';
-            break;
-        default:
-            $alt = 'No Rating';
-            break;
-    }
- 
-    if (!isset($rating) || $rating == '')
-        echo $alt;
-    else {
-        for ($i = 0; $i < 5; $i++) {
-            if ($rating > $i)
-                echo '<img src="'.get_stylesheet_directory_uri().'/images/star_on.png" alt="'.$alt.'" title="'.$alt.'" />';
-            else
-                echo '<img src="'.get_stylesheet_directory_uri().'/images/star_off.png" alt="'.$alt.'" title="'.$alt.'" />';
-        }
-    }
-}
 
-function get_average_ratings($id) {
-    $comment_array = get_approved_comments($id);
-    $count = 1;
- 
-    if ($comment_array) {
-        $i = 0;
-        $total = 0;
-        foreach($comment_array as $comment){
-            $rat = get_comment_meta($comment->comment_ID, 'rat');
-            if(isset($rat[0]) && $rat[0] !== '') {
-                $i++;
-                $total += $rat[0];
-            }
-        }
- 
-        if($i == 0)
-            return false;
-        else
-            return round($total/$i);
-    } else {
-        return false;
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
