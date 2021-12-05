@@ -69,7 +69,8 @@ function change_waitlist()
 		$uidDashTitle = $_POST['uidDashTitle'];
 		$enrollment = $_POST['enrollment'];
 		$uid = explode('-', $uidDashTitle)[0];
-		$title = explode('-', $uidDashTitle)[1];
+		$title_dirty = explode('-', $uidDashTitle)[1];
+		$title = strtolower(str_replace(' ', '', $title_dirty));
 		$enrollment_key = $title . "_enrollment";
 		$r = update_user_meta($uid, $enrollment_key, $enrollment); 
 		if($r){
@@ -85,6 +86,7 @@ function change_waitlist()
 
 /*
 Function for an instructor to save a grade for a student in a given class
+NOTE: if the instructor is updating a grade for a student and it's the same as the current grade in the database, it will "fail"
 */
 add_action('wp_ajax_call_assign_grade', 'assign_grade');
 function assign_grade()
@@ -96,7 +98,8 @@ function assign_grade()
 		$uidDashTitle = $_POST['uidDashTitle'];
 		$grade = $_POST['grade'];
 		$uid = explode('-', $uidDashTitle)[0];
-		$title = explode('-', $uidDashTitle)[1];
+		$title_dirty = explode('-', $uidDashTitle)[1];
+		$title = strtolower(str_replace(' ', '', $title_dirty));
 		$grade_key = $title . "_grade";
 		$r = update_user_meta($uid, $grade_key, $grade);
 		if($r){

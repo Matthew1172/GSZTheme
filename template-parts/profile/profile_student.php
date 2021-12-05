@@ -53,6 +53,9 @@
 				case 'exp':
 				$status = 'Expelled';
 				break;
+				case 'alu':
+				$status = 'Alumni';
+				break;
 			}
 			$phase = get_user_meta($currentId, 'phase', true);
 			switch($phase){
