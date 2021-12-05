@@ -233,8 +233,21 @@ if (have_posts()) {
 							$transcript_key = str_replace(" ", "", strtolower($name)) . "_transcript";
 							for ($i = 1; $i < 5; $i++) {
 								if (get_user_meta($uid, $transcript_key . "_" . strval($i), true) == "taken") {
-									//this student has taken this class on some attempt 1->5
-									$taken = true;
+									//this student has taken this class on some attempt 1->4
+									//now check their grade for this attempt, if it cp or greater than set taken flag to be true
+									$fgrade_key = str_replace(" ", "", strtolower($name)) . "_fgrade_".strval($i);
+									$gf = get_user_meta($uid, $fgrade_key, true);
+									switch($gf){
+										case 'na':
+										case 'w':
+										case 'f':
+											//grade is not sufficient to satify the prereq
+											break;
+										default:
+											//grade is sufficient
+											$taken = true;
+											break;
+									}
 								}
 							}
 							if (!$taken) {

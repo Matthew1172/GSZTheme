@@ -17,6 +17,9 @@
                 },
                 success: function (response) {
                     switch (response['r']) {
+						case 'full':
+							fail("This class is full.");
+							break;
                         case 'failed':
                             fail();
                             break;

@@ -22,7 +22,13 @@ function enroll_class()
 		$new_title = str_replace(' ', '', $title);
 		$uid = explode('-', $titleDashUidDashEnroll)[1];
 		$enrollment_key = strtolower($new_title) . "_enrollment";
-		$r = update_user_meta($uid, $enrollment_key, 'e'); 
+		
+		//check if class is full
+		//check if prereqs are satisfied
+		//check if no time conflicts
+		
+		
+		$r = update_user_meta($uid, $enrollment_key, 'e');
 		if($r){
 			$response['r'] = 'success';
 		}else{
@@ -41,7 +47,8 @@ add_action('wp_ajax_call_drop_class', 'drop_class');
 function drop_class()
 {
 	$response = array(
-		'r' => ''
+		'r' => '',
+		'c' => ''
 	);
 	if (is_user_logged_in()) {
 		$titleDashUidDashWithdraw = $_POST['titleDashUidDashWithdraw'];
@@ -49,12 +56,88 @@ function drop_class()
 		$new_title = str_replace(' ', '', $title);
 		$uid = explode('-', $titleDashUidDashWithdraw)[1];
 		$enrollment_key = strtolower($new_title) . "_enrollment";
+		$phase = get_user_meta($uid, 'phase', true);
+		$k = $phase == 'crup' ? true : false;
+		$j = $phase == 'gp' ? true : false;
+		
+		//change the enrollment meta to not enrolled, check the students phase meta to see if they're in
+		//the course running period, or grading period; and if they are check they're transcript and add this attempt with a grade of W.
+		
+		//check after we drop the class if they're not enrolled in any class and they're in the course running period or grading period, if they are then issue a warning.
+		
 		$r = update_user_meta($uid, $enrollment_key, 'ne');
-		if($r){
-			$response['r'] = 'success';
-		}else{
+		if(!$r){
 			$response['r'] = 'failed';
+			wp_send_json($response);
 		}
+
+		//check students enrollment in all classes
+		$last_class = true;
+		$qry = array(
+			'post_type' => 'gradschoolzeroclass'
+		);
+		$classes = new WP_Query($qry);
+		if ($classes->have_posts()) {
+			while ($classes->have_posts()) {
+				$classes->the_post();
+				$last_pid = get_the_id();
+				$last_title = get_the_title();
+				$last_enrollment_key = strtolower($last_title) . "_enrollment";
+				$en = get_user_meta($uid, $last_enrollment_key, true);
+				if($en == 'e'){
+					//student is enrolled in this class, so make last class flag false
+					$last_class = false;
+				}
+			}
+		}
+		
+		if($last_class && ($k || $j)){
+			//the student is dropping their last class in the course running period or the grading period. issue a warning.
+			$warn = absint(get_user_meta($uid, 'warn', true));
+			if($warn > 4){
+				//this user already has 5 warnings so don't do anything
+			}else{
+				$warn++;
+				$r = update_user_meta($uid, 'warn', $warn);
+				if(!$r){
+					$response['r'] = 'failed';
+					$response['c'] = $warn;
+					wp_send_json($response);
+				}
+			}
+		}
+		
+		
+		if($k || $j){
+			//they need a W on their transcript
+			$attempt = 1;
+			$transcript_key = str_replace(" ", "", strtolower($title)) . "_transcript";
+			$fgrade_key = str_replace(" ", "", strtolower($title)) . "_fgrade";
+				
+			for ($i = 1; $i < 5; $i++) {
+				if (get_user_meta($uid, $transcript_key . "_" . strval($i), true) == "taken") {
+					//this student has taken this class on some attempt 1->4
+					$attempt++;
+				}
+			}
+			
+			if($attempt > 4){
+				//this is the students 5th attempt. don't add it
+			}else{
+				$r = update_user_meta($uid, $transcript_key . "_" . strval($attempt), 'taken');
+				if(!$r){
+					$response['r'] = 'failed';
+					wp_send_json($response);
+				}
+				$r = update_user_meta($uid, $fgrade_key . "_" . strval($attempt), 'w');
+				if(!$r){
+					$response['r'] = 'failed';
+					wp_send_json($response);
+				}
+			}
+		}
+		//if we got this far then everything was successful
+		$response['r'] = 'success';
 	} else {
 		$response['r'] = 'failed';
 	}
