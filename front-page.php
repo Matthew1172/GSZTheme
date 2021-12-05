@@ -50,7 +50,7 @@ if($q->have_posts()){
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-10">
+		<div class="col-md-12">
 			<h2>Description </h2>
 			<hr>
 			<p>Grad School Zero is a college graduate program management
@@ -60,14 +60,17 @@ if($q->have_posts()){
 			a grading system. 
 			</p>
 		</div>
-		<div class="col-md-2">
+	</div>
+	<div class="row">		
+		<div class="col-md-12">
 			<?php
 			$about_page_id = get_page_by_title('about', OBJECT, 'page');
 			$perma = get_permalink($about_page_id);
-			echo "<a href='$perma' class='btn btn-primary w-100'>Read More</a>"
+			echo "<a href='$perma' class='btn btn-primary w-25'>Read More</a>"
 			?>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col-md-12">
 			<h2 class="">Registrar announcements</h2>
@@ -124,10 +127,10 @@ if($q->have_posts()){
 						if(count($ratings) > 0){
 							arsort($ratings);
 							foreach($ratings as $key => $val){
-								echo("<tr><th class='w-5'>$key</th><th class='w-5'>$val</th></tr>");
+								echo("<tr><td>$key</td><td>$val</td></tr>");
 							}
 						}else{
-							echo("<tr><th class='w-10'>There are no reviews for any classes at this time.</th></tr>");
+							echo("<tr><td>There are no reviews for any classes at this time.</td></tr>");
 						}
 						?>
 					</tbody>
@@ -151,10 +154,10 @@ if($q->have_posts()){
 						if(count($ratings) > 0){
 							asort($ratings);
 							foreach($ratings as $key => $val){
-								echo("<tr><th class='w-5'>$key</th><th class='w-5'>$val</th></tr>");
+								echo("<tr><td>$key</td><td>$val</td></tr>");
 							}
 						}else{
-							echo("<tr><th class='w-10'>There are no reviews for any classes at this time.</th></tr>");
+							echo("<tr><td>There are no reviews for any classes at this time.</td></tr>");
 						}
 						?>
 					</tbody>
