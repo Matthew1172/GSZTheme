@@ -26,7 +26,28 @@ function enroll_class()
 		//check if class is full
 		//check if prereqs are satisfied
 		//check if no time conflicts
-		
+		//check if student has already more than 3 classes, deny the request to enroll and send back too many error code
+		$enroll=0;
+		$qry = array(
+		    'post_type' => 'gradschoolzeroclass'
+		);
+		$classes = new WP_Query($qry);
+		if ($classes->have_posts()) {
+		    while ($classes->have_posts()) {
+			$classes->the_post();
+			$e_pid = get_the_id();
+			$e_title = get_the_title();
+			$enrollment_key = str_replace(" ", "", strtolower($e_title)) . "_enrollment";
+			$e = get_user_meta($uid, $enrollment_key, true);
+			if($e == 'e'){
+			    $enroll++;
+			}
+		    }
+		}
+		if($enroll > 3){
+		    $response['r'] = 'tooMany';
+		    wp_send_json($response);
+		}
 		
 		$r = update_user_meta($uid, $enrollment_key, 'e');
 		if($r){
