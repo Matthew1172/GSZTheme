@@ -1,30 +1,33 @@
 (function($) {
 	$(document).ready(function() {
-		/*
-		Function for student to enroll in a class
-		*/
-		$(document).on('click', '.enroll-class', function () {
+        /*
+        Function for student to enroll in a class
+        */
+        $(document).on('click', '.enroll-class', function () {
             var titleDashUidDashEnroll = $(this).attr('id');
-			$.ajax({
+            $.ajax({
                 type: "POST",
                 dataType: 'JSON',
                 data: {
                     action: 'call_enroll_class',
                     titleDashUidDashEnroll: titleDashUidDashEnroll
                 },
-				beforeSend: function (response) {
-					$('#loading').show()
+                beforeSend: function (response) {
+                    $('#loading').show()
                 },
                 success: function (response) {
                     switch (response['r']) {
-						case 'full':
-							fail("This class is full.");
-							break;
+                        case 'tooMany':
+                            fail("You're already enrolled into four classes.");
+                            break;
+                        case 'full':
+                            fail("This class is full.");
+                            break;
                         case 'failed':
                             fail();
                             break;
                         case 'success':
-							success();
+                            success();
                             break;
                         default:
                             appBreak();
@@ -32,9 +35,9 @@
                     }
                 }
             }).done(function() {
-				$('#loading').hide();
-			});
-		});
+                $('#loading').hide();
+            });
+        });
 
         /*
 		Function for student to drop a class
