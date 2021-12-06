@@ -16,6 +16,7 @@ if (have_posts()) {
 		the_post();
 		$pid = get_the_ID();
 		$title = get_the_title();
+		$content = get_the_content();
 		$args = array(
 			'post_id' => $pid,
 			'status' => 'approve'
@@ -156,7 +157,7 @@ if (have_posts()) {
 
 				<div class="col-md-8">
 					<h5>Class description</h5>
-					<?php the_content(); ?>
+					<?php echo $content; ?>
 					<h5>Student reviews</h5>
 					<?php
 					echo "<div class='table-responsive'>";
