@@ -95,7 +95,8 @@ function signup_insert()
             break;
         }
     }
-    $error['url'] = get_permalink(get_page_by_path('sign-in')->ID);
+    //$error['url'] = get_permalink(get_page_by_path('sign-in')->ID);
+    $error['url'] = home_url('/');
     wp_send_json($error);
 }
 add_action('wp_ajax_nopriv_call_signup', 'signup_insert');

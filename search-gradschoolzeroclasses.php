@@ -18,7 +18,7 @@ $s = (get_query_var('ct')) ? get_query_var('ct') : false;
 //Put these query vars into a WP query argument
 $qry = array(
     'post_type'    => 'gradschoolzeroclass',
-    'posts_per_page' => 2,
+    'posts_per_page' => 10,
     'paged' => $currentPage,
     's' => $s
 );

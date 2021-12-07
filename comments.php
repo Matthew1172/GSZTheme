@@ -8,4 +8,4 @@ $comment_args = array(
 	'comment_field' => '<p class="comment-form-comment"><textarea style="width:500px;" id=" comment" name="comment" placeholder="Write a Review" aria-required="true"></textarea></p>'
 );
 comment_form($comment_args);
-wp_list_comments('type=comment');
+//wp_list_comments('type=comment');

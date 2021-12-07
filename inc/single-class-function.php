@@ -9,7 +9,7 @@
  
  /*
 Function for a student to enroll into a class
-*/
+  */
 add_action('wp_ajax_call_enroll_class', 'enroll_class');
 function enroll_class()
 {
@@ -26,7 +26,60 @@ function enroll_class()
 		//check if class is full
 		//check if prereqs are satisfied
 		//check if no time conflicts
-		
+		//check if student has already more than 3 classes, deny the request to enroll and send back too many error code
+		$enroll=0;
+		$qry = array(
+		    'post_type' => 'gradschoolzeroclass'
+		);
+		$classes = new WP_Query($qry);
+		if ($classes->have_posts()) {
+		    while ($classes->have_posts()) {
+			$classes->the_post();
+			$e_pid = get_the_id();
+			$e_title = get_the_title();
+			$e_enrollment_key = str_replace(" ", "", strtolower($e_title)) . "_enrollment";
+			$e = get_user_meta($uid, $e_enrollment_key, true);
+			if($e == 'e'){
+			    $enroll++;
+			}
+		    }
+		}
+		if($enroll > 3){
+		    $response['r'] = 'tooMany';
+		    wp_send_json($response);
+		}
+
+
+		//check if this student has this class on their transcript. If they have a passing grade for this class then they can't enroll.
+		//check if student has this class on their transcript
+		$taken = false;
+		$can_enroll = false;
+		$transcript_key = str_replace(" ", "", strtolower($new_title)) . "_transcript";
+		for ($i = 1; $i < 5; $i++) {
+		        if (get_user_meta($uid, $transcript_key . "_" . strval($i), true) == "taken") {
+                                //this student has taken this class on some attempt 1->5
+                                $taken = true;
+                                //get the final grade for the attempt
+				$fgrade_key = str_replace(" ", "", strtolower($new_title)) . "_fgrade_".strval($i);
+                                $gf = get_user_meta($uid, $fgrade_key, true);
+                                switch($gf){
+                                case 'f':
+                                        $can_enroll = true;
+                                        break;
+                                default:
+                                        $can_enroll = false;
+                                        break;
+				}
+                        }
+		}
+		if(!$taken){
+			$can_enroll = true;
+		}
+
+		if(!$can_enroll){
+		    $response['r'] = 'suffGrade';
+		    wp_send_json($response);
+		}
 		
 		$r = update_user_meta($uid, $enrollment_key, 'e');
 		if($r){
@@ -226,8 +279,9 @@ function additional_fields () {
   <span class="commentratingbox">';
 
     //Current rating scale is 1 to 5. If you want the scale to be 1 to 10, then set the value of $i to 10.
-    for( $i=1; $i <= 5; $i++ )
-    echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"/>'. $i .'</span>';
+    for( $i=1; $i <= 5; $i++ ){
+    	echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"/>'. $i .'</span>';
+    }
 
   echo'</span></p>';
 }

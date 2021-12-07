@@ -98,7 +98,7 @@
                         case 'success':
                             $(".form-message").html("<h4 class='text-center form-success'>Success.</h4>");
                             $("#signup-fName, #signup-lName, #signup-email, #student-gpa, #signup-uid, #signup-pw, #signup-pw2").val("");
-                            var x = "Thank you for creating an account with Grad School Zero! Please sign in by pressing OK.";
+                            var x = "Thank you for creating an account with Grad School Zero! Please await further instructions in the email you provided. Please note your account is under review, and during this time will be inactive.";
                             var url = response['url'];
                             alert(x);
                             window.location.assign(url);

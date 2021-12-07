@@ -16,6 +16,9 @@ if (have_posts()) {
 		the_post();
 		$pid = get_the_ID();
 		$title = get_the_title();
+		$content = get_the_content();
+		$id_title = strtolower(str_replace(' ', '', $title));
+		
 		$args = array(
 			'post_id' => $pid,
 			'status' => 'approve'
@@ -94,7 +97,7 @@ if (have_posts()) {
 		$blogusers = get_users(array('role__in' => array('student')));
 		foreach ($blogusers as $user) {
 			$uid = absint($user->ID);
-			$enrollment_key = str_replace(" ", "", strtolower($title)) . "_enrollment";
+			$enrollment_key = $id_title . "_enrollment";
 			//get the enrollment status assigned for this user
 			$en = get_user_meta($uid, $enrollment_key, true);
 			//check if this user is enrolled to this class
@@ -108,7 +111,7 @@ if (have_posts()) {
 		$blogusers = get_users(array('role__in' => array('instructor')));
 		foreach ($blogusers as $user) {
 			$iid = absint($user->ID);
-			$assignment_key = str_replace(" ", "", strtolower($title)) . "_assignment";
+			$assignment_key = $id_title . "_assignment";
 			$as = get_user_meta($iid, $assignment_key, true);
 			if ($as == 'a') {
 				array_push($instructors, $user->display_name);
@@ -156,7 +159,7 @@ if (have_posts()) {
 
 				<div class="col-md-8">
 					<h5>Class description</h5>
-					<?php the_content(); ?>
+					<?php echo $content; ?>
 					<h5>Student reviews</h5>
 					<?php
 					echo "<div class='table-responsive'>";
@@ -221,8 +224,7 @@ if (have_posts()) {
 						<?php
 						//only display this area if the student is not enrolled
 						//NOTE: a student can enroll or waitlist if taken before, because multiple attempts are allowed, even if that student got an A+
-						$enrollment_key = str_replace(" ", "", strtolower($title)) . "_enrollment";
-						$id_title = strtolower(str_replace(' ', '', $title));
+						$enrollment_key = $id_title . "_enrollment";
 						$en = get_user_meta($uid, $enrollment_key, true);
 
 						//check if student meets all prereqs
@@ -404,7 +406,7 @@ if (have_posts()) {
 
 						//check if student has this class on their transcript
 						$taken = false;
-						$transcript_key = str_replace(" ", "", strtolower($title)) . "_transcript";
+						$transcript_key = $id_title . "_transcript";
 						for ($i = 1; $i < 5; $i++) {
 							if (get_user_meta($uid, $transcript_key . "_" . strval($i), true) == "taken") {
 								//this student has taken this class on some attempt 1->5

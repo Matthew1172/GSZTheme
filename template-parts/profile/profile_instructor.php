@@ -90,6 +90,7 @@
 						$pid = get_the_id();
 						$link = get_permalink();
 						$title = get_the_title();
+						$title_id = str_replace(" ", "", strtolower($title));
 						$assignment_key = str_replace(" ", "", strtolower($title)) . "_assignment";
 						$as = get_user_meta($currentId, $assignment_key, true);
 						if($as == 'a'){
@@ -122,7 +123,7 @@
 												echo '<tr>';
 													echo "<td>$name</td>";
 													echo '<td>';
-														echo "<select id='$uid-$title-grade' class='form-select'>";
+														echo "<select id='$uid-$title_id-grade' class='form-select'>";
 															echo '<option value="na" '; 
 															selected($gr, 'na');
 															echo '>N/A</option>';
@@ -184,7 +185,7 @@
 															echo '>W</option>';
 														echo '</select>';
 													echo '</td>';
-													echo "<td><button id='$uid-$title' class='assign-grade btn btn-primary'>Assign</button></td>";
+													echo "<td><button id='$uid-$title_id' class='assign-grade btn btn-primary'>Assign</button></td>";
 												echo '</tr>';
 											}
 										}
@@ -199,7 +200,9 @@
 			//If the instructor is in the <csp> phase, then display everyclass that this instructor is assigned to
 			//and that a student is waitlisted for. Then display all students that are waitlisted for that class along
 			//with a dropdown selector with two options, <admit> or <waitlisted>. And display a submit button next to it.
-			if($phase == 'csp'){
+			
+			
+			if($phase == 'crp' || $phase == 'scrp'){
 				echo "<h2>My waitlisted students</h2>";
 				echo "<hr />";
 				$classes_query = array('post_type' => 'gradschoolzeroclass');
@@ -210,6 +213,7 @@
 						$pid = get_the_id();
 						$link = get_permalink();
 						$title = get_the_title();
+						$title_id = str_replace(" ", "", strtolower($title));
 						$assignment_key = str_replace(" ", "", strtolower($title)) . "_assignment";
 						$as = get_user_meta($currentId, $assignment_key, true);
 						if($as == 'a'){
@@ -239,7 +243,7 @@
 												echo '<tr>';
 													echo "<td>$name</td>";
 													echo '<td>';
-														echo "<select id='$uid-$title-enrollment' class='form-select'>";
+														echo "<select id='$uid-$title_id-enrollment' class='form-select'>";
 															echo '<option value="wl" ';
 															selected($en, 'wl');
 															echo '>Remain waitlisted</option>';
@@ -250,7 +254,7 @@
 
 														echo '</select>';
 													echo '</td>';
-													echo "<td><button id='$uid-$title' class='change-waitlist btn btn-primary'>Change waitlist</button></td>";
+													echo "<td><button id='$uid-$title_id' class='change-waitlist btn btn-primary'>Change waitlist</button></td>";
 												echo '</tr>';
 											}
 										}

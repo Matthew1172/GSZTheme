@@ -59,51 +59,61 @@ if (!function_exists('gradschoolzero_setup')) {
 				'unlink-homepage-logo' => true,
 			)
 		);
-		
+
 		//Create the post categories that this theme uses for the about us, contact, and footer
-	  wp_insert_term(
-		'About',
-		'category',
-		array(
-		  'description' => 'A description of Grad School Zero.',
-		  'slug' => 'about'
-		)
-	  );
-	  wp_insert_term(
-		'Announcement',
-		'category',
-		array(
-		  'description' => 'This is an announcement made by the Registrar.',
-		  'slug' => 'announcement'
-		)
-	  );
-	  wp_insert_term(
-		'Contact',
-		'category',
-		array(
-		  'description' => 'The Grad School Zero contact information',
-		  'slug' => 'contact'
-		)
-	  );
-	  $parent_contact = term_exists('Contact', 'category');
-	  wp_insert_term(
-		'Contact page',
-		'category',
-		array(
-		  'description' => 'The registrar contact information on the contact page.',
-		  'slug' => 'contactPage',
-		  'parent' => $parent_contact['term_id']
-		)
-	  );
-	  wp_insert_term(
-		'Contact footer',
-		'category',
-		array(
-		  'description' => 'The contact information in the footer for the registrar.',
-		  'slug' => 'contactFooter',
-		  'parent' => $parent_contact['term_id']
-		)
-	  );
+		wp_insert_term(
+			'About',
+			'category',
+			array(
+				'description' => 'A description of Grad School Zero.',
+				'slug' => 'about'
+			)
+		);
+		wp_insert_term(
+			'Announcement',
+			'category',
+			array(
+				'description' => 'This is an announcement made by the Registrar.',
+				'slug' => 'announcement'
+			)
+		);
+		$parent_announ = term_exists('Announcement', 'category');
+		wp_insert_term(
+			'Student tutorial',
+			'category',
+			array(
+				'description' => 'A tutorial by the registrar on how to use the Grad School Zero website as a student.',
+				'slug' => 'studentTutorial',
+				'parent' => $parent_announ['term_id']
+			)
+		);
+		wp_insert_term(
+			'Contact',
+			'category',
+			array(
+				'description' => 'The Grad School Zero contact information',
+				'slug' => 'contact'
+			)
+		);
+		$parent_contact = term_exists('Contact', 'category');
+		wp_insert_term(
+			'Contact page',
+			'category',
+			array(
+				'description' => 'The registrar contact information on the contact page.',
+				'slug' => 'contactPage',
+				'parent' => $parent_contact['term_id']
+			)
+		);
+		wp_insert_term(
+			'Contact footer',
+			'category',
+			array(
+				'description' => 'The contact information in the footer for the registrar.',
+				'slug' => 'contactFooter',
+				'parent' => $parent_contact['term_id']
+			)
+		);
 
 
 		//create all pages for theme
@@ -249,7 +259,7 @@ if (!function_exists('gradschoolzero_setup')) {
 		}else{
 			$recoveraccount_page_id = get_page_by_title('recover account', OBJECT, 'page');
 		}
-		*/
+		 */
 		// Set the title, template, etc
 		$new_page_title     = __('Profile', 'text-domain');
 		$new_page_content   = '';                           // Content goes here
@@ -365,7 +375,7 @@ if (!function_exists('gradschoolzero_setup')) {
 				'menu-item-url' => $recoveraccount_perma,
 				'menu-item-status' => 'publish'
 			));
-*/
+ */
 			wp_update_nav_menu_item($menu_id, 0, array(
 				'menu-item-title' =>  __('Search classes'),
 				'menu-item-classes' => 'search-classes',
@@ -503,7 +513,7 @@ function deactivate_my_theme( $new_theme ) {
 
 	//delete pages
 
-    flush_rewrite_rules(false);
+	flush_rewrite_rules(false);
 }
 add_action( 'switch_theme', 'deactivate_my_theme' );
 
@@ -593,7 +603,7 @@ function valid_student_gpa($x)
 add_action('after_setup_theme', 'remove_admin_bar');
 function remove_admin_bar() {
 	if (!current_user_can('administrator') && !is_admin()) {
-	  show_admin_bar(false);
+		show_admin_bar(false);
 	}
 }
 
@@ -670,10 +680,10 @@ function index_script_enqueue()
 	//wp_enqueue_script('bootboxJS', get_template_directory_uri() . '/assets/bootbox-5.5.2-dist/bootbox.min.js');
 	/*Configuration file for this theme, includes AJAX config and creating bootbox prompts for system messages*/
 	wp_enqueue_script('configJS', get_template_directory_uri() . '/assets/js/configure.js', array('jquery'));
-	
+
 	/*
 	Add javascript files here, the comment below is an example, make sure the first parameter is unique, just keep parameters 3-5 the same
-	*/
+	 */
 	//wp_enqueue_script('myFileJS', get_template_directory_uri() . '/assets/js/my-file.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('signupJS', get_template_directory_uri() . '/assets/js/signup_controls.js', array('jquery'), '1.0', true);
 	/* Student and instructor profile javascript controls */
@@ -684,7 +694,7 @@ function index_script_enqueue()
 
 	/*
 	Add css files here, the comment below is an example
-	*/
+	 */
 	//wp_enqueue_style('myFileCSS', get_template_directory_uri() . '/assets/css/my-file.css');
 	/* Signup stylesheet */
 	wp_enqueue_style('signupCSS', get_template_directory_uri() . '/assets/css/signup_style.css');
@@ -697,11 +707,11 @@ function index_script_enqueue()
 	//add logout url and logout button html so we can localize it in the config.js file where we append it to the navbar after loading the page
 	$logoutRaw = wp_loginout($_SERVER['REQUEST_URI'], false);
 	$logoutNav = "<li class='nav-item nav-link'>$logoutRaw<span class='dashicons dashicons-migrate pl-1'></span></li>";
-	
+
 	/*This allows PHP variables to be passed as a javascript object called gsz into the specified javascript file. 
-	* We need to pass the admin-agax url into the configuration.js file so it can setup AJAX accordingly
-	* We also need to pass the logout html so that it can append it to the navbar
-	*/
+	 * We need to pass the admin-agax url into the configuration.js file so it can setup AJAX accordingly
+	 * We also need to pass the logout html so that it can append it to the navbar
+	 */
 	wp_localize_script('configJS', 'gsz', array(
 		'url' => admin_url('admin-ajax.php'),
 		'logOut' => $logoutNav
@@ -712,7 +722,7 @@ add_action('wp_enqueue_scripts', 'index_script_enqueue');
 
 /*
 Add php files with hook names matching the ajax function calls in JS file
-*/
+ */
 
 //Class search functions
 require  get_template_directory() . '/inc/search-classes-function.php';
