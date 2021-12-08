@@ -10,6 +10,8 @@
  * @since gradschoolzero 1.0
  */
 
+
+
 if (!function_exists('gradschoolzero_setup')) {
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.

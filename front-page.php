@@ -186,7 +186,6 @@ if($q->have_posts()){
 						$blogusers = get_users(array('role__in' => array('student')));
 						foreach ($blogusers as $user) {
 							$uid = $user->ID;
-							$name = $user->display_name;
 							
 							$classes_query = array('post_type' => 'gradschoolzeroclass');
 							$q = new WP_Query($classes_query);
@@ -257,7 +256,7 @@ if($q->have_posts()){
 							
 							if ($numOfFactors > 0) {
 								$gpa = $gp / $numOfFactors;
-								$allGpas[$name] = $gpa;
+								$allGpas[$uid] = $gpa;
 							}
 							$gp = 0.0;
 							$numOfFactors = 0.0;
@@ -267,7 +266,9 @@ if($q->have_posts()){
 							arsort($allGpas);
 							array_slice($allGpas, 0, 5);
 							$i = 0;
-							foreach ($allGpas as $name => $gpa) {
+							foreach ($allGpas as $uid => $gpa) {
+								$u = get_userdata($uid);
+								$name = $u->first_name.' '.$u->last_name;
 								$i++;
 								echo "<tr>";
 								echo "<td>$i</td>";

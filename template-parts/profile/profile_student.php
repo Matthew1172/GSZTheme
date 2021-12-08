@@ -14,8 +14,9 @@
 <div class="banner">
     <div class="heading container">
 		<?php
-			$name = $info->display_name;
-			echo "<h1 class='text-white'>Welcome back, $name</h1>";
+			$fname = $info->first_name;
+			$lname = $info->last_name;
+			echo "<h1 class='text-white'>Welcome back, $fname $lname</h1>";
 		?>
     </div>
     <div class="container" style="padding-left: 0px; padding-right: 0px;">
