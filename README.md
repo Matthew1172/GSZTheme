@@ -53,7 +53,7 @@ This is a graduate school Wordpress Theme for the Grad School Zero website.
 
 Wordpress comes with a GUI which helped us interact with our database and provide great security measures. It was a good way to organize and view frontend and backend versions of our website.  It allows for compatibity amongst websites, web apps + mobile apps, including a great and large community. As for the XAMPP tech stack, it is a simple and lightweight solution that works wonders for testing and locally hosting websites and clients on servers.
 
-## Example Screenshots
+## Sample Screenshots
 
 ![](image/README/1639042766811.png)
 
