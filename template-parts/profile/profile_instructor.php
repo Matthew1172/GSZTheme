@@ -432,7 +432,7 @@
 <?php
 $current_user = wp_get_current_user();
 $name = $current_user->user_firstname." ".$current_user->user_lastname;
-$role = 'student';
+$role = 'instructor';
 $email = $current_user->user_email;
 $login = $current_user->user_login;
 
