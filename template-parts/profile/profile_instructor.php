@@ -14,8 +14,9 @@
 <div class="banner">
     <div class="heading container">
 		<?php
-			$name = $info->display_name;
-			echo "<h1 class='text-white'>Welcome back, $name</h1>";
+			$fname = $info->first_name;
+			$lname = $info->last_name;
+			echo "<h1 class='text-white'>Welcome back, $fname $lname</h1>";
 		?>
     </div>
     <div class="container" style="padding-left: 0px; padding-right: 0px;">
@@ -78,7 +79,6 @@
 			
 			//If instructor is in phase <gp> then we will display a table of each class they're assigned to,
 			//as well as a dropdown menu with a grade for each student in that class
-			if($phase == 'gp'){
 				echo "<h2>My students</h2>";
 				echo "<hr />";
 				//the instructor is in the grading period, so display a table for each class they're assigned to
@@ -110,7 +110,9 @@
 										$blogusers = get_users(array('role__in' => array('student')));
 										foreach ($blogusers as $user) {
 											$uid = absint($user->ID);
-											$name = $user->display_name;
+											$fname = $user->first_name;	
+											$lname = $user->last_name;	
+
 											$enrollment_key = str_replace(" ", "", strtolower($title)) . "_enrollment";
 											$grade_key = str_replace(" ", "", strtolower($title)) . "_grade";
 											//get the enrollment status and grade assigned for this user
@@ -121,7 +123,10 @@
 											if($en == 'e'){
 												//student is enrolled in this class
 												echo '<tr>';
-													echo "<td>$name</td>";
+													echo "<td>$fname $lname</td>";
+												//only display this dropdown if instructor is in grading period
+												if($phase == 'gp'){
+
 													echo '<td>';
 														echo "<select id='$uid-$title_id-grade' class='form-select'>";
 															echo '<option value="na" '; 
@@ -186,6 +191,9 @@
 														echo '</select>';
 													echo '</td>';
 													echo "<td><button id='$uid-$title_id' class='assign-grade btn btn-primary'>Assign</button></td>";
+												}else{
+													echo "<td colspan='2'>You can only assign grades in the grading period</td>";
+												}	
 												echo '</tr>';
 											}
 										}
@@ -195,7 +203,6 @@
 						}
 					}
 				}
-			}
 			
 			//If the instructor is in the <csp> phase, then display everyclass that this instructor is assigned to
 			//and that a student is waitlisted for. Then display all students that are waitlisted for that class along
@@ -425,7 +432,7 @@
 <?php
 $current_user = wp_get_current_user();
 $name = $current_user->user_firstname." ".$current_user->user_lastname;
-$role = 'student';
+$role = 'instructor';
 $email = $current_user->user_email;
 $login = $current_user->user_login;
 
