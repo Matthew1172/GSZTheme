@@ -35,7 +35,7 @@ This is a graduate school Wordpress Theme for the Grad School Zero website.
 
 ## Infrastructure + Front-End
 
-**WordPress** - A framework which provides a graphical user interface and content management provider
+**WordPress** - framework which provides a graphical user interface and content management service
 
 **Apache** - Served as our web server
 
@@ -51,7 +51,7 @@ This is a graduate school Wordpress Theme for the Grad School Zero website.
 
 ### Why this stack?
 
-Wordpress comes with a GUI which helped us interact with our database and provide great security measures. It was a good way to organize and view frontend and backend versions of our website.  It allows for compatibity amongst websites, web apps + mobile apps, including a great and large community. As for the XAMPP tech stack, it is a simple and lightweight solution that works wonders for testing and locally hosting websites and clients on servers.
+Wordpress comes with a GUI which helped us interact with a database while providing great security measures. It is a good way to organize and view the frontend and backend versions of our website.  It allows for compatibity amongst websites, web apps + mobile apps and comes with a great and large community. As for the XAMPP tech stack, it is a simple and lightweight solution which works wonders for testing and locally hosting websites and clients on servers.
 
 ## External Links
 
