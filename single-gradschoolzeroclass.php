@@ -114,7 +114,10 @@ if (have_posts()) {
 			$assignment_key = $id_title . "_assignment";
 			$as = get_user_meta($iid, $assignment_key, true);
 			if ($as == 'a') {
-				array_push($instructors, $user->display_name);
+				$fname = $user->first_name;
+				$lname = $user->last_name;
+				$ins_name = $fname.' '.$lname;
+				array_push($instructors, $ins_name);
 			}
 		}
 

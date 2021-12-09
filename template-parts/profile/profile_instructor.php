@@ -79,7 +79,6 @@
 			
 			//If instructor is in phase <gp> then we will display a table of each class they're assigned to,
 			//as well as a dropdown menu with a grade for each student in that class
-			if($phase == 'gp'){
 				echo "<h2>My students</h2>";
 				echo "<hr />";
 				//the instructor is in the grading period, so display a table for each class they're assigned to
@@ -111,7 +110,9 @@
 										$blogusers = get_users(array('role__in' => array('student')));
 										foreach ($blogusers as $user) {
 											$uid = absint($user->ID);
-											$name = $user->display_name;
+											$fname = $user->first_name;	
+											$lname = $user->last_name;	
+
 											$enrollment_key = str_replace(" ", "", strtolower($title)) . "_enrollment";
 											$grade_key = str_replace(" ", "", strtolower($title)) . "_grade";
 											//get the enrollment status and grade assigned for this user
@@ -122,7 +123,10 @@
 											if($en == 'e'){
 												//student is enrolled in this class
 												echo '<tr>';
-													echo "<td>$name</td>";
+													echo "<td>$fname $lname</td>";
+												//only display this dropdown if instructor is in grading period
+												if($phase == 'gp'){
+
 													echo '<td>';
 														echo "<select id='$uid-$title_id-grade' class='form-select'>";
 															echo '<option value="na" '; 
@@ -187,6 +191,9 @@
 														echo '</select>';
 													echo '</td>';
 													echo "<td><button id='$uid-$title_id' class='assign-grade btn btn-primary'>Assign</button></td>";
+												}else{
+													echo "<td colspan='2'>You can only assign grades in the grading period</td>";
+												}	
 												echo '</tr>';
 											}
 										}
@@ -196,7 +203,6 @@
 						}
 					}
 				}
-			}
 			
 			//If the instructor is in the <csp> phase, then display everyclass that this instructor is assigned to
 			//and that a student is waitlisted for. Then display all students that are waitlisted for that class along
