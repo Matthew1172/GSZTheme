@@ -56,9 +56,9 @@ Wordpress comes with a GUI which helped us interact with a database while provid
 
 ## External Links
 
-[CSC 322 Report - Team M (FINAL)](https://drive.google.com/file/d/1sQAWenCroxHQT_--WBBYf9oolSuwWQVS/view?usp=sharing)
+[CSC 322 - Phase 1 Report - Team M](https://drive.google.com/file/d/1sQAWenCroxHQT_--WBBYf9oolSuwWQVS/view?usp=sharing)
 
-[CSC 322 - Phase 2 Report](https://drive.google.com/file/d/1JWZFsopHIQVkdYEPA6_mX7F_XCTL-ju5/view?usp=sharing)
+[CSC 322 - Phase 2 Report - Team M](https://drive.google.com/file/d/1JWZFsopHIQVkdYEPA6_mX7F_XCTL-ju5/view?usp=sharing)
 
 [UML Diagram](https://miro.com/app/board/o9J_luuvkTY=/?invite_link_id=526400883626)
 
