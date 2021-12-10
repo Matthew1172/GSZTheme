@@ -8,7 +8,7 @@ This is a graduate school Wordpress Theme for the Grad School Zero website.
 
 **Live Demo:** [Grad School Zero](http://52.168.54.18/wordpress/) using Microsoft Azure
 
-**Local Demo (Video Steps):** https://www.youtube.com/watch?v=Jx8l45R4t0A  
+**Local Demo (Video Steps):** https://www.youtube.com/watch?v=Frvbk92Kup0  
 
 **Local Demo (Written Steps):**  
 1) Install [XAMPP](https://www.apachefriends.org/download.html). Turn on your Apache and MySQL instances.
