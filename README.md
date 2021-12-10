@@ -8,8 +8,9 @@ This is a graduate school Wordpress Theme for the Grad School Zero website.
 
 **Live Demo:** [Grad School Zero](http://52.168.54.18/wordpress/) using Microsoft Azure
 
-**Local Demo:**
+**Local Demo (Video Steps):** https://www.youtube.com/watch?v=Jx8l45R4t0A  
 
+**Local Demo (Written Steps):  
 1) Install XAMPP. Turn on your Apache and MySQL instances.
 2) Download [Wordpress](https://wordpress.org/download/#download-install) on your Machine in `.../directory/xampp/htdocs`. Unzip it into that file and rename it as `gradSchoolZero`.
 3) Move GSZTheme and [GSZPlugin](https://github.com/Matthew1172/GSZPlugin) into their respective folders in `.../xampp/htdocs/gradSchoolZero/wp-content`, which would be the `/themes` and `/plugins` directory
