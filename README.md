@@ -60,7 +60,7 @@ Wordpress comes with a GUI which helped us interact with a database while provid
 
 [CSC 322 - Phase 2 Report - Team M](https://drive.google.com/file/d/1JWZFsopHIQVkdYEPA6_mX7F_XCTL-ju5/view?usp=sharing)
 
-[UML Diagram](https://miro.com/app/board/o9J_luuvkTY=/?invite_link_id=526400883626)
+[UML Diagram](https://miro.com/app/board/o9J_lnwaipI=/?invite_link_id=946069299152)
 
 [Big Collaboration Class Diagram](https://miro.com/app/board/uXjVOfArji8=/?invite_link_id=972464468462)
 
